@@ -15,4 +15,10 @@ class Product extends Model
     {
         return $this->belongsToMany(Customer::class);
     }
+
+    public function ledgers()
+    {
+        return $this->belongsToMany(Ledger::class,'product_ledger');
+    }
+
 }

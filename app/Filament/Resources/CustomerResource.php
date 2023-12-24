@@ -66,7 +66,11 @@ class CustomerResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('phone')
+                    ->required()
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('address')
+                    ->label('Full Address')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('city')
@@ -88,7 +92,10 @@ class CustomerResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('phone')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('address')
+                    ->label('Full Address')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('city')
                     ->searchable(),

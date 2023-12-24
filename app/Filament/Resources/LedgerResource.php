@@ -4,8 +4,16 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\LedgerResource\Pages;
 use App\Filament\Resources\LedgerResource\RelationManagers;
+use App\Filament\Resources\LedgerResource\RelationManagers\CustomerProductRelationManager;
+use App\Models\Customer;
 use App\Models\Ledger;
+use App\Models\Product;
+use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -23,16 +31,58 @@ class LedgerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('customer_id')
+                Select::make('customer_id')
+                    ->options(Customer::all()->pluck('name', 'id'))
+                    ->searchable()
+                    ->required(),
+
+                Forms\Components\TextInput::make('bill_no')
+                    ->default(function () {
+
+                        $ledger = Ledger::orderBy('created_at', 'desc')->first();
+                        return $ledger ? $ledger->bill_no + 1 : '#0001';
+                    })
+                    ->required()
+                    ->maxLength(255),
+                Section::make('Add Product')
+                    ->description('Prevent abuse by limiting the number of requests per period')
+                    ->schema([
+                        Repeater::make('product')
+                        ->relationship('products')
+                            ->schema([
+                                Select::make('product_id')
+                                    ->options(Product::all()->pluck('name', 'id'))
+                                    ->searchable()
+
+                                    ->required(),
+                                Select::make('product_qty')
+                                    ->options(function () {
+
+                                        $qty = [];
+                                        for ($i = 0; $i <= 10; $i++) {
+
+                                            $qty[$i] = $i;
+                                        }
+                                        return $qty;
+                                    })
+                                    ->required(),
+                            ])
+                            ->columns(2),
+
+                    ]),
+                TextInput::make('total_amount')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('total_amount')
+                TextInput::make('total_credit')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('total_credit')
+                TextInput::make('total_due')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('total_due')
+                TextInput::make('labour')
+                    ->required()
+                    ->numeric(),
+                TextInput::make('bardever')
                     ->required()
                     ->numeric(),
             ]);
@@ -45,6 +95,10 @@ class LedgerResource extends Resource
                 Tables\Columns\TextColumn::make('customer_id')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('bill_no')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('product_ids')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('total_amount')
                     ->numeric()
                     ->sortable(),
@@ -52,6 +106,12 @@ class LedgerResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total_due')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('labour')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('bardever')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -79,7 +139,7 @@ class LedgerResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            CustomerProductRelationManager::class,
         ];
     }
 
