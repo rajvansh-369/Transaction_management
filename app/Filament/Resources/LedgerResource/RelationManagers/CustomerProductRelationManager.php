@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\LedgerResource\RelationManagers;
 
+use Closure;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
@@ -10,6 +12,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Actions\AttachAction;
+use Filament\Tables\Columns\TextColumn;
 
 class CustomerProductRelationManager extends RelationManager
 {
@@ -21,10 +24,10 @@ class CustomerProductRelationManager extends RelationManager
             ->schema([
 
 
-                Forms\Components\TextInput::make('name')
+               TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('price')
+               TextInput::make('product_qty')
                     ->required()
                     ->maxLength(255),
 
@@ -36,8 +39,22 @@ class CustomerProductRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('price'),
+                TextColumn::make('name'),
+                TextColumn::make('product_qty'),
+                TextColumn::make('price')
+                ->getStateUsing(function ($record) {
+                    return $record->price * $record->product_qty ;
+                })
+                // ->getStateUsing(function($state,Closure $get)
+                //     {
+
+                //         return $state;
+
+
+                // })
+                ,
+
+
             ])
             ->filters([
                 //
@@ -47,11 +64,11 @@ class CustomerProductRelationManager extends RelationManager
                 Tables\Actions\AttachAction::make()
                 ->form(fn (AttachAction $action): array => [
                     $action->getRecordSelect(),
-                    Forms\Components\TextInput::make('product_qty')->required(),
+                   TextInput::make('product_qty')->required(),
                 ]),
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DetachAction::make(),
                 // Tables\Actions\DeleteAction::make(),
             ])
@@ -63,8 +80,11 @@ class CustomerProductRelationManager extends RelationManager
             ])
             ->emptyStateActions([
 
-                AttachAction::make()
-
+                Tables\Actions\AttachAction::make()
+                ->form(fn (AttachAction $action): array => [
+                    $action->getRecordSelect(),
+                   TextInput::make('product_qty')->required(),
+                ]),
             ]);
     }
 }

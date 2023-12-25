@@ -9,7 +9,7 @@ class Ledger extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['customer_id', 'bill_no', 'product_ids', 'total_amount', 'total_credit', 'total_due', 'labour', 'bardever',];
+    protected $fillable = ['customer_id', 'bill_no', 'total_amount', 'total_credit', 'total_due', 'labour', 'bardana',];
 
     // protected $casts = [
     //     'products_data' => 'array',
@@ -26,6 +26,15 @@ class Ledger extends Model
     {
         return $this->belongsToMany(Product::class,'product_ledger')->withPivot('product_qty')->withTimestamps();
     }
+
+
+    public function total_price()
+    {
+        return $this->belongsToMany(Product::class,'product_ledger')->withPivot('product_qty')->withTimestamps();
+        // return $this->belongsToMany(Product::class,'product_ledger')->withPivot('product_qty')->withTimestamps();
+    }
+
+
 
     public function customer()
     {

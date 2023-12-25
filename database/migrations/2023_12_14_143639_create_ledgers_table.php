@@ -18,8 +18,8 @@ return new class extends Migration
             $table->float('total_amount');
             $table->float('total_credit');
             $table->float('total_due');
-            $table->float('labour');
-            $table->float('bardever');
+            $table->integer('labour');
+            $table->integer('bardana');
             $table->timestamps();
         });
     }
