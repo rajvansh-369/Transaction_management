@@ -162,7 +162,7 @@ class LedgerResource extends Resource
                 Tables\Columns\TextColumn::make('labour')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('bardever')
+                Tables\Columns\TextColumn::make('bardana')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
