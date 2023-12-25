@@ -18,7 +18,7 @@ class CustomerResource extends Resource
 {
     protected static ?string $model = Customer::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'carbon-customer';
 
     public static function form(Form $form): Form
     {
@@ -66,7 +66,11 @@ class CustomerResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('phone')
+                    ->required()
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('address')
+                    ->label('Full Address')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('city')
@@ -88,7 +92,10 @@ class CustomerResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('phone')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('address')
+                    ->label('Full Address')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('city')
                     ->searchable(),
