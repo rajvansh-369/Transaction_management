@@ -49,7 +49,7 @@ class LedgerResource extends Resource
                         return $ledger ? $ledger->bill_no + 1 : '#0001';
                     })
                     ->required()
-                    ->maxLength(255),
+                    ->readonly(),
                 // Section::make('Add Product')
                 //     ->description('Prevent abuse by limiting the number of requests per period')
                 //     ->schema([
@@ -77,64 +77,65 @@ class LedgerResource extends Resource
 
                 //     ]),
                 TextInput::make('labour')
-                ->afterStateUpdated(function (Set $set,?Ledger $record , $state, Get $get) {
+                    ->visibleOn('edit')
+                    ->afterStateUpdated(function (Set $set, ?Ledger $record, $state, Get $get) {
 
-                    $totalPrice = $record->total_price->sum(function ($product) {
-                        return $product->price * $product->pivot->product_qty;
-                    });
+                        $totalPrice = $record->total_price->sum(function ($product) {
+                            return $product->price * $product->pivot->product_qty;
+                        });
 
-                    if($get('bardana') != '' || $get('total_due') != ''){
-                    $set('total_amount',(float)$totalPrice+ $state*15+ $get('bardana')*15);
+                        if ($get('bardana') != '' || $get('total_due') != '') {
+                            $set('total_amount', (float)$totalPrice + $state * 15 + $get('bardana') * 15);
 
-                    $set('total_due', $get('total_amount') - $get('total_due'));
-                    }else{
-                        $set('total_amount',(float)$totalPrice+ $state*15);
-                    }
-                })
+                            $set('total_due', $get('total_amount') - $get('total_due'));
+                        } else {
+                            $set('total_amount', (float)$totalPrice + $state * 15);
+                        }
+                    })
                     // ->required()
                     ->numeric()
                     ->live(onBlur: true),
                 TextInput::make('bardana')
-                ->afterStateUpdated(function (Set $set,?Ledger $record , $state, Get $get) {
+                    ->visibleOn('edit')
+                    ->afterStateUpdated(function (Set $set, ?Ledger $record, $state, Get $get) {
 
-                    $totalPrice = $record->total_price->sum(function ($product) {
-                        return $product->price * $product->pivot->product_qty;
-                    });
+                        $totalPrice = $record->total_price->sum(function ($product) {
+                            return $product->price * $product->pivot->product_qty;
+                        });
 
-                    // dd($get('total_credit'));
-                    if($get('labour') != '' || $get('total_due') != ''){
+                        // dd($get('total_credit'));
+                        if ($get('labour') != '' || $get('total_due') != '') {
 
-                        $set('total_amount',(float)$totalPrice+ $state*20 + $get('labour')*15);
-
-
-                        $set('total_due', $get('total_amount') - $get('total_due'));
-                    }else{
-                        $set('total_amount',(float)$totalPrice+ $state*15);
-                    }
-
-                }) ->live(onBlur: true)
-                    // ->required()
-                        ,
-                TextInput::make('total_amount')
-                    // ->required()
-                    ->readonly()
-                    ,
-                TextInput::make('total_credit')
-                ->afterStateUpdated(function (Set $set, $state, Get $get) {
+                            $set('total_amount', (float)$totalPrice + $state * 20 + $get('labour') * 15);
 
 
-                    // dd($get('total_amount') ,$state);
-                   $set('total_due', $get('total_amount') - $state);
-
-                })
-
+                            $set('total_due', $get('total_amount') - $get('total_due'));
+                        } else {
+                            $set('total_amount', (float)$totalPrice + $state * 15);
+                        }
+                    })->live(onBlur: true)
                 // ->required()
-                ->numeric()
-                ->live(onBlur: true),
-                TextInput::make('total_due')
+                ,
+                TextInput::make('total_amount')
+                    ->visibleOn('edit')
                     // ->required()
-                ->readonly()
-                   ,
+                    ->readonly(),
+                TextInput::make('total_credit')
+                    ->visibleOn('edit')
+                    ->afterStateUpdated(function (Set $set, $state, Get $get) {
+
+
+                        // dd($get('total_amount') ,$state);
+                        $set('total_due', $get('total_amount') - $state);
+                    })
+
+                    // ->required()
+                    ->numeric()
+                    ->live(onBlur: true),
+                TextInput::make('total_due')
+                    ->visibleOn('edit')
+                    // ->required()
+                    ->readonly(),
 
             ]);
     }
