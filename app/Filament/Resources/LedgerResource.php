@@ -37,6 +37,7 @@ class LedgerResource extends Resource
         return $form
             ->schema([
                 Select::make('customer_id')
+                    ->label("Select Customer Name")
                     ->options(Customer::all()->pluck('name', 'id'))
                     ->searchable()
                     ->required()
@@ -77,6 +78,7 @@ class LedgerResource extends Resource
 
                 //     ]),
                 TextInput::make('labour')
+                ->required()
                     ->visibleOn('edit')
                     ->afterStateUpdated(function (Set $set, ?Ledger $record, $state, Get $get) {
 
@@ -96,6 +98,7 @@ class LedgerResource extends Resource
                     ->numeric()
                     ->live(onBlur: true),
                 TextInput::make('bardana')
+                ->required()
                     ->visibleOn('edit')
                     ->afterStateUpdated(function (Set $set, ?Ledger $record, $state, Get $get) {
 
