@@ -31,6 +31,6 @@ class PDFController extends Controller
 
         $pdf = PDF::loadView('reciept', $data);
 
-        return $pdf->download('itsolutionstuff.pdf');
+        return $pdf->download('invoice.pdf');
     }
 }
