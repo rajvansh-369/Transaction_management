@@ -30,6 +30,9 @@ class CustomerProductRelationManager extends RelationManager
                TextInput::make('product_qty')
                     ->required()
                     ->maxLength(255),
+               TextInput::make('product_price')
+                    ->required()
+                    ->maxLength(255),
 
             ]);
     }
@@ -43,7 +46,7 @@ class CustomerProductRelationManager extends RelationManager
                 TextColumn::make('product_qty'),
                 TextColumn::make('price')
                 ->getStateUsing(function ($record) {
-                    return $record->price * $record->product_qty ;
+                    return $record->product_price * $record->product_qty ;
                 })
                 // ->getStateUsing(function($state,Closure $get)
                 //     {
@@ -65,6 +68,9 @@ class CustomerProductRelationManager extends RelationManager
                 ->form(fn (AttachAction $action): array => [
                     $action->getRecordSelect(),
                    TextInput::make('product_qty')->required(),
+                   TextInput::make('product_price')->required()
+                   ->numeric()
+                   ->label('Rate'),
                 ]),
             ])
             ->actions([
@@ -83,7 +89,8 @@ class CustomerProductRelationManager extends RelationManager
                 Tables\Actions\AttachAction::make()
                 ->form(fn (AttachAction $action): array => [
                     $action->getRecordSelect(),
-                   TextInput::make('product_qty')->required(),
+                   TextInput::make('product_qty')->required()
+                  ,
                 ]),
             ]);
     }

@@ -24,13 +24,13 @@ class Ledger extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class,'product_ledger')->withPivot('product_qty')->withTimestamps();
+        return $this->belongsToMany(Product::class,'product_ledger')->withPivot(['product_qty','product_price'])->withTimestamps();
     }
 
 
     public function total_price()
     {
-        return $this->belongsToMany(Product::class,'product_ledger')->withPivot('product_qty')->withTimestamps();
+        return $this->belongsToMany(Product::class,'product_ledger')->withPivot(['product_qty','product_price'])->withTimestamps();
         // return $this->belongsToMany(Product::class,'product_ledger')->withPivot('product_qty')->withTimestamps();
     }
 
@@ -38,6 +38,6 @@ class Ledger extends Model
 
     public function customer()
     {
-        return $this->belongsToMany(Customer::class);
+        return $this->belongsTo(Customer::class);
     }
 }

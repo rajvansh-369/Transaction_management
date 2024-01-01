@@ -18,7 +18,7 @@ class Product extends Model
 
     public function ledgers()
     {
-        return $this->belongsToMany(Ledger::class,'product_ledger')->withPivot('product_qty')->withTimestamps();
+        return $this->belongsToMany(Ledger::class,'product_ledger')->withPivot(['product_qty','product_price'])->withTimestamps();
     }
 
 }

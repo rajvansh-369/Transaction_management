@@ -47,7 +47,7 @@ class LedgerResource extends Resource
                     ->default(function () {
 
                         $ledger = Ledger::orderBy('created_at', 'desc')->first();
-                        return $ledger ? $ledger->bill_no + 1 : '#0001';
+                        return $ledger ? $ledger->bill_no + 1 : '0001';
                     })
                     ->required()
                     ->readonly(),
@@ -78,12 +78,12 @@ class LedgerResource extends Resource
 
                 //     ]),
                 TextInput::make('labour')
-                ->required()
+                    ->required()
                     ->visibleOn('edit')
                     ->afterStateUpdated(function (Set $set, ?Ledger $record, $state, Get $get) {
 
                         $totalPrice = $record->total_price->sum(function ($product) {
-                            return $product->price * $product->pivot->product_qty;
+                            return $product->pivot->product_price * $product->pivot->product_qty;
                         });
 
                         if ($get('bardana') != '' || $get('total_due') != '') {
@@ -98,12 +98,12 @@ class LedgerResource extends Resource
                     ->numeric()
                     ->live(onBlur: true),
                 TextInput::make('bardana')
-                ->required()
+                    ->required()
                     ->visibleOn('edit')
                     ->afterStateUpdated(function (Set $set, ?Ledger $record, $state, Get $get) {
 
                         $totalPrice = $record->total_price->sum(function ($product) {
-                            return $product->price * $product->pivot->product_qty;
+                            return $product->pivot->product_price * $product->pivot->product_qty;
                         });
 
                         // dd($get('total_credit'));
@@ -147,12 +147,10 @@ class LedgerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('customer_id')
+                Tables\Columns\TextColumn::make('customer.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('bill_no')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('product_ids')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('total_amount')
                     ->numeric()
@@ -183,6 +181,9 @@ class LedgerResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('pdf')
+                    ->label('Download PDF')
+                    ->url(fn (Ledger $requset): string => route('pdf', ['id' => $requset->id]))
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

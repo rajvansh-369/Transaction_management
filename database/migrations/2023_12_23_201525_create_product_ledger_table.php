@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->foreignId('ledger_id')->constrained('ledgers')->onDelete('cascade');
             $table->integer('product_qty');
+            $table->float('product_price');
             $table->timestamps();
         });
     }
