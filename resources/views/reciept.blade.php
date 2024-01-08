@@ -11514,7 +11514,7 @@
                                                 @if ($product->nug != 0)
                                                     {{ $product->pivot->product_qty / $product->nug == 1 ? $product->pivot->product_qty / $product->nug . ' Nug' : $product->pivot->product_qty / $product->nug . ' Nugs' }}
                                                 @else
-                                                    {{ $product->pivot->product_qty == 1 ? $product->pivot->product_qty . ' Kg' : $product->pivot->product_qty / $product->nug . ' Kg' }}
+                                                    {{ $product->pivot->product_qty == 1 ? $product->pivot->product_qty . ' Kg' : $product->pivot->product_qty . ' Kg' }}
                                                 @endif
 
                                             </td>
