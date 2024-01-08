@@ -29,6 +29,9 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('price')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('nug')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -39,6 +42,8 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('price')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('nug')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
