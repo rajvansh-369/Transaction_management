@@ -11499,8 +11499,11 @@
                                     <tr>
                                         <th class="text-center" style="width:5%">#</th>
                                         <th style="width:30%">Item</th>
-                                        <th class="text-right" style="width:15%">Quantity</th>
-                                        <th class="text-right" style="width:15%">Unit Price</th>
+                                        <th class="text-right" style="width:15%">Nugs</th>
+                                        <th class="text-right" style="width:15%">Qty</th>
+                                        <th class="text-right" style="width:15%">GW</th>
+                                        <th class="text-right" style="width:15%">NW</th>
+                                        <th class="text-right" style="width:15%">Rate</th>
                                         <th class="text-right" style="width:15%">Total Price</th>
                                     </tr>
                                 </thead>
@@ -11512,13 +11515,16 @@
                                             <td>{{ $product->name }}</td>
                                             <td class="text-right">
                                                 @if ($product->nug != 0)
-                                                    {{ $product->pivot->product_qty / $product->nug == 1 ? $product->pivot->product_qty / $product->nug . ' Nug' : $product->pivot->product_qty / $product->nug . ' Nugs' }}
+                                                    {{ $product->pivot->product_qty / $product->nug == 1 ? number_format($product->pivot->product_qty / $product->nug , 2 , '.' , ',') . ' Nug' : number_format($product->pivot->product_qty / $product->nug , 2 , '.' , ',') . ' Nugs' }}
                                                 @else
                                                     {{ $product->pivot->product_qty == 1 ? $product->pivot->product_qty . ' Kg' : $product->pivot->product_qty . ' Kg' }}
                                                 @endif
 
                                             </td>
-                                            <td class="text-right">Rs.{{ number_format($product->pivot->product_price  , 2 , '.' , ',') }}</td>
+                                            <td class="text-right">{{$product->pivot->product_qty}} KG</td>
+                                            <td class="text-right">{{$product->pivot->product_qty}} KG</td>
+                                            <td class="text-right">{{$product->pivot->product_qty}} KG</td>
+                                            <td class="text-right">Rs.{{ number_format($product->pivot->product_price  , 2 , '.' , ',') }} /KG</td>
                                             <td class="text-right">
                                                 Rs.{{ number_format($product->pivot->product_qty * $product->pivot->product_price  , 2 , '.' , ',')}}
                                             </td>
