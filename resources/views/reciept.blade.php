@@ -11454,11 +11454,13 @@
             <div class="col-sm-12">
                 <div class="panel panel-default invoice" id="invoice">
                     <div class="panel-body">
-                        {{-- <div class="invoice-ribbon">
-                            <div class="ribbon-inner">PAID</div>
-                        </div> --}}
-                        <div class="row">
 
+                        <div class="row">
+                            @if ($ledger->is_paid)
+                            <div class="invoice-ribbon">
+                                <div class="ribbon-inner">PAID</div>
+                            </div>
+                            @endif
                             {{-- <div class="col-sm-6 top-left">
                                 <i class="fa fa-rocket"></i>
                             </div> --}}
