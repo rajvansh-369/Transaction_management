@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('bill_no');
             $table->float('total_amount')->nullable();
             $table->float('total_credit')->default(0)->nullable();
-            $table->float('total_due')->nullable();
+            $table->float('total_due')->default(0)->nullable();
             $table->integer('labour')->nullable();
             $table->integer('bardana')->nullable();
             $table->boolean('is_paid')->default(false);

@@ -85,7 +85,7 @@ class LedgerResource extends Resource
                     ->schema([
                         TextInput::make('labour')
                             ->required()
-                            ->visibleOn('edit')
+
                             ->afterStateUpdated(function (Set $set, ?Ledger $record, $state, Get $get) {
 
                                 $totalPrice = $record->total_price->sum(function ($product) {
@@ -105,7 +105,7 @@ class LedgerResource extends Resource
                             ->live(onBlur: true),
                         TextInput::make('bardana')
                             ->required()
-                            ->visibleOn('edit')
+
                             ->afterStateUpdated(function (Set $set, ?Ledger $record, $state, Get $get) {
 
                                 $totalPrice = $record->total_price->sum(function ($product) {
@@ -126,11 +126,11 @@ class LedgerResource extends Resource
                         // ->required()
                         ,
                         TextInput::make('total_amount')
-                            ->visibleOn('edit')
+
                             // ->required()
                             ->readonly(),
                         TextInput::make('total_credit')
-                            ->visibleOn('edit')
+
                             ->afterStateUpdated(function (Set $set, $state, Get $get) {
 
 
@@ -151,7 +151,7 @@ class LedgerResource extends Resource
                             ->live(onBlur: true),
 
                         TextInput::make('total_due')
-                            ->visibleOn('edit')
+
                             // ->required()
 
                             ->readonly(),
@@ -165,8 +165,9 @@ class LedgerResource extends Resource
                                     return False;
                                 }
                             })
+
                             ->label('Paid'),
-                    ])->columns(3)
+                    ])->columns(3)->visibleOn('edit')
             ]);
     }
 
@@ -216,6 +217,7 @@ class LedgerResource extends Resource
                 Tables\Actions\Action::make('pdf')
                     ->label('Download PDF')
                     ->url(fn (Ledger $requset): string => route('pdf', ['id' => $requset->id]))
+                    ->visible(fn (Ledger $request) => $request->total_credit !== null)
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
