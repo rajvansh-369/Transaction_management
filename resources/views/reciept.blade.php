@@ -11448,7 +11448,6 @@
 <body>
 
 
-    {{-- @dd(asset('storage/css/font-awesome.min.css')) --}}
     {{-- <link href="{{asset('storage/css/font-awesome.min.css')}}" rel="stylesheet"> --}}
     <div class="container bootstrap snippets bootdeys">
         <div class="row">
@@ -11499,26 +11498,37 @@
                                     <tr>
                                         <th class="text-center" style="width:5%">#</th>
                                         <th style="width:30%">Item</th>
-                                        <th class="text-right" style="width:15%">Quantity</th>
-                                        <th class="text-right" style="width:15%">Unit Price</th>
+                                        <th class="text-right" style="width:15%">Nugs</th>
+                                        <th class="text-right" style="width:15%">Qty</th>
+                                        <th class="text-right" style="width:15%">GW</th>
+                                        <th class="text-right" style="width:15%">NW</th>
+                                        <th class="text-right" style="width:15%">Rate</th>
                                         <th class="text-right" style="width:15%">Total Price</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
+                                    @php
+                                        $subTotal = 0;
+                                    @endphp
                                     @foreach ($products as $product)
+                                        @php
+                                            $subTotal += $product->pivot->product_qty * $product->pivot->product_price;
+                                        @endphp
                                         <tr>
                                             <td class="text-center">1</td>
                                             <td>{{ $product->name }}</td>
                                             <td class="text-right">
                                                 @if ($product->nug != 0)
-                                                    {{ $product->pivot->product_qty / $product->nug == 1 ? $product->pivot->product_qty / $product->nug . ' Nug' : $product->pivot->product_qty / $product->nug . ' Nugs' }}
+                                                    {{ $product->pivot->product_qty / $product->nug == 1 ? number_format($product->pivot->product_qty / $product->nug , 2 , '.' , ',') . ' Nug' : number_format($product->pivot->product_qty / $product->nug , 2 , '.' , ',') . ' Nugs' }}
                                                 @else
                                                     {{ $product->pivot->product_qty == 1 ? $product->pivot->product_qty . ' Kg' : $product->pivot->product_qty . ' Kg' }}
                                                 @endif
 
                                             </td>
-                                            <td class="text-right">Rs.{{ number_format($product->pivot->product_price  , 2 , '.' , ',') }}</td>
+                                            <td class="text-right">{{$product->pivot->product_qty}} KG</td>
+                                            <td class="text-right">{{$product->pivot->product_qty}} KG</td>
+                                            <td class="text-right">{{$product->pivot->product_qty}} KG</td>
+                                            <td class="text-right">Rs.{{ number_format($product->pivot->product_price  , 2 , '.' , ',') }} /KG</td>
                                             <td class="text-right">
                                                 Rs.{{ number_format($product->pivot->product_qty * $product->pivot->product_price  , 2 , '.' , ',')}}
                                             </td>
@@ -11538,7 +11548,7 @@
                                 <button class="btn btn-danger"><i class="fa fa-envelope-o"></i> Mail Invoice</button> --}}
                             </div>
                             <div class="col-xs-6 text-right pull-right invoice-total">
-                                <p>Subtotal : Rs.{{ number_format($ledger->total_amount   , 2 , '.' , ',') }}</p>
+                                <p>Subtotal : Rs.{{ number_format($subTotal  , 2 , '.' , ',') }}</p>
                                 {{-- <p>Discount (10%) : $101 </p> --}}
                                 {{-- <p>VAT (8%) : $73 </p> --}}
                                 <p>Bardana ({{$ledger->bardana}} x 20): {{number_format($ledger->bardana * 20  , 2 , '.' , ',') }} </p>
