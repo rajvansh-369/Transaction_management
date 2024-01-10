@@ -11515,22 +11515,22 @@
                                             $subTotal += $product->pivot->product_qty * $product->pivot->product_price;
                                         @endphp
                                         <tr>
-                                            <td class="text-center">1</td>
+                                            <td class="text-center">{{$loop->index+1}}</td>
                                             <td>{{ $product->name }}</td>
                                             <td class="text-right">
                                                 @if ($product->nug != 0)
-                                                    {{ $product->pivot->product_qty / $product->nug == 1 ? number_format($product->pivot->product_qty / $product->nug , 2 , '.' , ',') . ' Nug' : number_format($product->pivot->product_qty / $product->nug , 2 , '.' , ',') . ' Nugs' }}
+                                                    {{ number_format($product->pivot->product_qty / $product->nug , 2 , '.' , ',') }}
                                                 @else
-                                                    {{ $product->pivot->product_qty == 1 ? $product->pivot->product_qty . ' Kg' : $product->pivot->product_qty . ' Kg' }}
+                                                    {{ $product->pivot->product_qty }}
                                                 @endif
 
                                             </td>
-                                            <td class="text-right">{{$product->pivot->product_qty}} KG</td>
-                                            <td class="text-right">{{$product->pivot->product_qty}} KG</td>
-                                            <td class="text-right">{{$product->pivot->product_qty}} KG</td>
-                                            <td class="text-right">Rs.{{ number_format($product->pivot->product_price  , 2 , '.' , ',') }} /KG</td>
+                                            <td class="text-right">{{$product->pivot->product_qty}}</td>
+                                            <td class="text-right">{{$product->pivot->product_qty}}</td>
+                                            <td class="text-right">{{$product->pivot->product_qty}}</td>
+                                            <td class="text-right">{{ number_format($product->pivot->product_price  , 2 , '.' , ',') }}</td>
                                             <td class="text-right">
-                                                Rs.{{ number_format($product->pivot->product_qty * $product->pivot->product_price  , 2 , '.' , ',')}}
+                                                {{ number_format($product->pivot->product_qty * $product->pivot->product_price  , 2 , '.' , ',')}}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -11548,12 +11548,12 @@
                                 <button class="btn btn-danger"><i class="fa fa-envelope-o"></i> Mail Invoice</button> --}}
                             </div>
                             <div class="col-xs-6 text-right pull-right invoice-total">
-                                <p>Subtotal : Rs.{{ number_format($subTotal  , 2 , '.' , ',') }}</p>
+                                <p>Subtotal : {{ number_format($subTotal  , 2 , '.' , ',') }}</p>
                                 {{-- <p>Discount (10%) : $101 </p> --}}
                                 {{-- <p>VAT (8%) : $73 </p> --}}
                                 <p>Bardana ({{$ledger->bardana}} x 20): {{number_format($ledger->bardana * 20  , 2 , '.' , ',') }} </p>
                                 <p>Bardana ({{$ledger->labour}} x 15): {{number_format($ledger->labour * 15   , 2 , '.' , ',')}} </p>
-                                <p>Total : Rs.{{number_format($ledger->total_amount   , 2 , '.' , ',') }} </p>
+                                <p>Total : Rs. {{number_format($ledger->total_amount   , 2 , '.' , ',') }} </p>
                             </div>
                         </div>
 

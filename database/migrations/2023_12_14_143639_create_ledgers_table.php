@@ -16,10 +16,11 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
             $table->string('bill_no');
             $table->float('total_amount')->nullable();
-            $table->float('total_credit')->nullable();
+            $table->float('total_credit')->default(0)->nullable();
             $table->float('total_due')->nullable();
             $table->integer('labour')->nullable();
             $table->integer('bardana')->nullable();
+            $table->boolean('is_paid')->default(false);
             $table->timestamps();
         });
     }

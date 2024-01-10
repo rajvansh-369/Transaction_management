@@ -11,15 +11,18 @@ use App\Models\Product;
 use App\Models\User;
 use Closure;
 use Filament\Forms;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -77,69 +80,93 @@ class LedgerResource extends Resource
                 //             ->columns(2),
 
                 //     ]),
-                TextInput::make('labour')
-                    ->required()
-                    ->visibleOn('edit')
-                    ->afterStateUpdated(function (Set $set, ?Ledger $record, $state, Get $get) {
 
-                        $totalPrice = $record->total_price->sum(function ($product) {
-                            return $product->pivot->product_price * $product->pivot->product_qty;
-                        });
+                Fieldset::make('Price Calculation')
+                    ->schema([
+                        TextInput::make('labour')
+                            ->required()
+                            ->visibleOn('edit')
+                            ->afterStateUpdated(function (Set $set, ?Ledger $record, $state, Get $get) {
 
-                        if ($get('bardana') != '' || $get('total_due') != '') {
-                            $set('total_amount', (float)$totalPrice + $state * 15 + $get('bardana') * 20);
+                                $totalPrice = $record->total_price->sum(function ($product) {
+                                    return $product->pivot->product_price * $product->pivot->product_qty;
+                                });
 
-                            $set('total_due', $get('total_amount') - $get('total_due'));
-                        } else {
-                            $set('total_amount', (float)$totalPrice + $state * 15);
-                        }
-                    })
-                    // ->required()
-                    ->numeric()
-                    ->live(onBlur: true),
-                TextInput::make('bardana')
-                    ->required()
-                    ->visibleOn('edit')
-                    ->afterStateUpdated(function (Set $set, ?Ledger $record, $state, Get $get) {
+                                if ($get('bardana') != '' || $get('total_due') != '') {
+                                    $set('total_amount', (float)$totalPrice + $state * 15 + $get('bardana') * 20);
 
-                        $totalPrice = $record->total_price->sum(function ($product) {
-                            return $product->pivot->product_price * $product->pivot->product_qty;
-                        });
+                                    $set('total_due', $get('total_amount') - $get('total_due'));
+                                } else {
+                                    $set('total_amount', (float)$totalPrice + $state * 15);
+                                }
+                            })
+                            // ->required()
+                            ->numeric()
+                            ->live(onBlur: true),
+                        TextInput::make('bardana')
+                            ->required()
+                            ->visibleOn('edit')
+                            ->afterStateUpdated(function (Set $set, ?Ledger $record, $state, Get $get) {
 
-                        // dd($get('total_credit'));
-                        if ($get('labour') != '' || $get('total_due') != '') {
+                                $totalPrice = $record->total_price->sum(function ($product) {
+                                    return $product->pivot->product_price * $product->pivot->product_qty;
+                                });
 
-                            $set('total_amount', (float)$totalPrice + $state * 20 + $get('labour') * 15);
+                                // dd($get('total_credit'));
+                                if ($get('labour') != '' || $get('total_due') != '') {
 
-
-                            $set('total_due', $get('total_amount') - $get('total_due'));
-                        } else {
-                            $set('total_amount', (float)$totalPrice + $state * 20);
-                        }
-                    })->live(onBlur: true)
-                // ->required()
-                ,
-                TextInput::make('total_amount')
-                    ->visibleOn('edit')
-                    // ->required()
-                    ->readonly(),
-                TextInput::make('total_credit')
-                    ->visibleOn('edit')
-                    ->afterStateUpdated(function (Set $set, $state, Get $get) {
+                                    $set('total_amount', (float)$totalPrice + $state * 20 + $get('labour') * 15);
 
 
-                        // dd($get('total_amount') ,$state);
-                        $set('total_due', $get('total_amount') - $state);
-                    })
+                                    $set('total_due', $get('total_amount') - $get('total_due'));
+                                } else {
+                                    $set('total_amount', (float)$totalPrice + $state * 20);
+                                }
+                            })->live(onBlur: true)
+                        // ->required()
+                        ,
+                        TextInput::make('total_amount')
+                            ->visibleOn('edit')
+                            // ->required()
+                            ->readonly(),
+                        TextInput::make('total_credit')
+                            ->visibleOn('edit')
+                            ->afterStateUpdated(function (Set $set, $state, Get $get) {
 
-                    // ->required()
-                    ->numeric()
-                    ->live(onBlur: true),
-                TextInput::make('total_due')
-                    ->visibleOn('edit')
-                    // ->required()
-                    ->readonly(),
 
+                                // dd($get('total_amount') ,$state);
+                                $set('total_due', $get('total_amount') - $state);
+                                if ($get('total_due') == 0) {
+
+
+                                    $set('is_paid', 1);
+                                } else {
+
+                                    $set('is_paid', 0);
+                                }
+                            })
+
+                            // ->required()
+                            ->numeric()
+                            ->live(onBlur: true),
+
+                        TextInput::make('total_due')
+                            ->visibleOn('edit')
+                            // ->required()
+
+                            ->readonly(),
+                        Toggle::make('is_paid')
+                            ->formatStateUsing(function (Set $set, $state, Get $get) {
+
+                                if ($state == 1) {
+                                    return True;
+                                } else {
+
+                                    return False;
+                                }
+                            })
+                            ->label('Paid'),
+                    ])->columns(3)
             ]);
     }
 
@@ -152,19 +179,24 @@ class LedgerResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('bill_no')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('total_amount')
+                IconColumn::make('is_paid')
+                    ->boolean(),
+
+
+
+                Tables\Columns\TextColumn::make('labour')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('total_credit')
+                Tables\Columns\TextColumn::make('bardana')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total_due')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('labour')
+                Tables\Columns\TextColumn::make('total_credit')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('bardana')
+                Tables\Columns\TextColumn::make('total_amount')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

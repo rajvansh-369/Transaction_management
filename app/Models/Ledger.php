@@ -9,7 +9,7 @@ class Ledger extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['customer_id', 'bill_no', 'total_amount', 'total_credit', 'total_due', 'labour', 'bardana',];
+    protected $fillable = ['customer_id', 'bill_no', 'total_amount', 'total_credit', 'total_due', 'labour', 'bardana','is_paid'];
 
     // protected $casts = [
     //     'products_data' => 'array',
