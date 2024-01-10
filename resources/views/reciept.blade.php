@@ -11552,7 +11552,7 @@
                                 {{-- <p>Discount (10%) : $101 </p> --}}
                                 {{-- <p>VAT (8%) : $73 </p> --}}
                                 <p>Bardana ({{$ledger->bardana}} x 20): {{number_format($ledger->bardana * 20  , 2 , '.' , ',') }} </p>
-                                <p>Bardana ({{$ledger->labour}} x 15): {{number_format($ledger->labour * 15   , 2 , '.' , ',')}} </p>
+                                <p>Labour ({{$ledger->labour}} x 15): {{number_format($ledger->labour * 15   , 2 , '.' , ',')}} </p>
                                 <p>Total : Rs. {{number_format($ledger->total_amount   , 2 , '.' , ',') }} </p>
                             </div>
                         </div>
