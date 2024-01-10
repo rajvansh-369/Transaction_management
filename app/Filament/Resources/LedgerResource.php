@@ -217,7 +217,7 @@ class LedgerResource extends Resource
                 Tables\Actions\Action::make('pdf')
                     ->label('Download PDF')
                     ->url(fn (Ledger $requset): string => route('pdf', ['id' => $requset->id]))
-                    ->visible(fn (Ledger $request) => $request->total_credit !== null)
+                    ->visible(fn (Ledger $request) => $request->total_amount !== null)
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
