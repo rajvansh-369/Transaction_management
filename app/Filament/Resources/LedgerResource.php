@@ -176,6 +176,7 @@ class LedgerResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('customer.name')
+                    ->searchable()
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('bill_no')
