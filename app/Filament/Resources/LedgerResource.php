@@ -95,7 +95,7 @@ class LedgerResource extends Resource
                                 if ($get('bardana') != '' || $get('total_due') != '') {
                                     $set('total_amount', (float)$totalPrice + $state * 15 + $get('bardana') * 20);
 
-                                    $set('total_due', $get('total_amount') - $get('total_due'));
+                                    $set('total_due', $get('total_amount') - $get('total_credit'));
                                 } else {
                                     $set('total_amount', (float)$totalPrice + $state * 15);
                                 }
@@ -118,7 +118,7 @@ class LedgerResource extends Resource
                                     $set('total_amount', (float)$totalPrice + $state * 20 + $get('labour') * 15);
 
 
-                                    $set('total_due', $get('total_amount') - $get('total_due'));
+                                    $set('total_due', $get('total_amount') - $get('total_credit'));
                                 } else {
                                     $set('total_amount', (float)$totalPrice + $state * 20);
                                 }
@@ -209,7 +209,7 @@ class LedgerResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
+            ])->defaultSort('is_paid' , 'desc', 'created_at', 'desc')
             ->filters([
                 //
             ])
