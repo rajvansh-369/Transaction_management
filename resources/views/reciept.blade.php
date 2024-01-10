@@ -11500,8 +11500,8 @@
                                         <th style="width:30%">Item</th>
                                         <th class="text-right" style="width:15%">Nugs</th>
                                         <th class="text-right" style="width:15%">Qty</th>
-                                        <th class="text-right" style="width:15%">GW</th>
-                                        <th class="text-right" style="width:15%">NW</th>
+                                        <th class="text-right" style="width:15%">G.W.</th>
+                                        <th class="text-right" style="width:15%">N.W.</th>
                                         <th class="text-right" style="width:15%">Rate</th>
                                         <th class="text-right" style="width:15%">Total Price</th>
                                     </tr>
