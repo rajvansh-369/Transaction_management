@@ -158,7 +158,7 @@ class LedgerResource extends Resource
 
                             // ->required()
                             ->numeric()
-                            ->live(),
+                            ->live(onBlur:true),
 
                         TextInput::make('total_due')
 
@@ -192,7 +192,9 @@ class LedgerResource extends Resource
                 Tables\Columns\TextColumn::make('bill_no')
                     ->searchable(),
                 IconColumn::make('is_paid')
-                    ->boolean(),
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check-badge')
+                    ->falseIcon('icomoon-cross'),
 
 
 
@@ -219,7 +221,7 @@ class LedgerResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])->defaultSort('is_paid' , 'desc', 'created_at', 'desc')
+            ])->defaultSort('created_at', 'desc','is_paid' , 'desc')
             ->filters([
                 //
             ])
