@@ -11553,8 +11553,8 @@
                                 <p>Subtotal : {{ number_format($subTotal  , 2 , '.' , ',') }}</p>
                                 {{-- <p>Discount (10%) : $101 </p> --}}
                                 {{-- <p>VAT (8%) : $73 </p> --}}
-                                <p>Bardana : {{number_format($ledger->bardana * $totalNug  , 2 , '.' , ',') }} </p>
-                                <p>Labour : {{number_format($ledger->labour * $totalNug   , 2 , '.' , ',')}} </p>
+                                <p>Bardana ({{$ledger->bardana}}) : {{number_format($ledger->bardana * $totalNug  , 2 , '.' , ',') }} </p>
+                                <p>Labour ({{$ledger->labour}}): {{number_format($ledger->labour * $totalNug   , 2 , '.' , ',')}} </p>
                                 <p>Total : Rs. {{number_format($ledger->total_amount   , 2 , '.' , ',') }} </p>
                             </div>
                         </div>
