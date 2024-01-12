@@ -8,8 +8,9 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 
-class PaidInvoiceTable extends BaseWidget
+class DueInvoiceTable extends BaseWidget
 {
+
     protected int | string | array $columnSpan = 'full';
     protected static ?int $sort = 3;
     public function table(Table $table): Table
