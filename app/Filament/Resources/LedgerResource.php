@@ -89,40 +89,50 @@ class LedgerResource extends Resource
                             ->afterStateUpdated(function (Set $set, ?Ledger $record, $state, Get $get) {
 
                                 $totalPrice = $record->total_price->sum(function ($product) {
-                                    return $product->pivot->product_price * $product->pivot->product_qty;
+                                    return ($product->pivot->product_price != 0 ? $product->pivot->product_price : $product->price ) * $product->nug;
                                 });
 
-                                if ($get('bardana') != '' || $get('total_due') != '') {
-                                    $set('total_amount', (float)$totalPrice + $state * 15 + $get('bardana') * 20);
+                                $totalNug = $record->products->sum(function ($product) {
+                                    return  $product->nug;
+                                });
 
-                                    $set('total_due', $get('total_amount') - $get('total_credit'));
+                                // dd((integer)$get('total_amount') , (integer)$get('total_credit'));
+                                if ($get('bardana') != '' || $get('total_due') != '') {
+                                    $set('total_amount', (float)$totalPrice + $state * $totalNug + (integer)$get('bardana') * $totalNug);
+
+                                //   dd($get('total_amount') , $get('total_credit'));
+                                    $set('total_due', (integer)$get('total_amount') - (integer)$get('total_credit'));
                                 } else {
-                                    $set('total_amount', (float)$totalPrice + $state * 15);
+                                    $set('total_amount', (float)$totalPrice + $state * $totalNug);
                                 }
                             })
                             // ->required()
                             ->numeric()
-                            ->live(onBlur: true),
+                            ->live(),
                         TextInput::make('bardana')
                             ->required()
 
                             ->afterStateUpdated(function (Set $set, ?Ledger $record, $state, Get $get) {
 
                                 $totalPrice = $record->total_price->sum(function ($product) {
-                                    return $product->pivot->product_price * $product->pivot->product_qty;
+                                    return  ($product->pivot->product_price != 0 ? $product->pivot->product_price : $product->price ) * $product->nug;
                                 });
 
+
+                                $totalNug = $record->products->sum(function ($product) {
+                                    return  $product->nug;
+                                });
                                 // dd($get('total_credit'));
                                 if ($get('labour') != '' || $get('total_due') != '') {
 
-                                    $set('total_amount', (float)$totalPrice + $state * 20 + $get('labour') * 15);
+                                    $set('total_amount', (float)$totalPrice + $state * $totalNug + (integer)$get('labour') * $totalNug);
 
 
-                                    $set('total_due', $get('total_amount') - $get('total_credit'));
+                                    $set('total_due', (integer)$get('total_amount') - (integer)$get('total_credit'));
                                 } else {
-                                    $set('total_amount', (float)$totalPrice + $state * 20);
+                                    $set('total_amount', (float)$totalPrice + $state * $totalNug);
                                 }
-                            })->live(onBlur: true)
+                            })->live()
                         // ->required()
                         ,
                         TextInput::make('total_amount')
@@ -148,7 +158,7 @@ class LedgerResource extends Resource
 
                             // ->required()
                             ->numeric()
-                            ->live(onBlur: true),
+                            ->live(),
 
                         TextInput::make('total_due')
 

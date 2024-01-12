@@ -11480,7 +11480,7 @@
                                 <p>{{ $customer->city }}</p>
                                 <p>{{ $customer->state }} - India</p>
                                 <p>Phone: {{ $customer->phone }}</p>
-                                <p>Email: {{ auth()->user()->email }}</p>
+                                <p>Email: {{ $customer->email }}</p>
 
                             </div>
 
@@ -11501,7 +11501,7 @@
                                         <th class="text-center" style="width:5%">#</th>
                                         <th style="width:30%">Item</th>
                                         <th class="text-right" style="width:15%">Nugs</th>
-                                        <th class="text-right" style="width:15%">Qty</th>
+                                        {{-- <th class="text-right" style="width:15%">Qty</th> --}}
                                         <th class="text-right" style="width:15%">G.W.</th>
                                         <th class="text-right" style="width:15%">N.W.</th>
                                         <th class="text-right" style="width:15%">Rate</th>
@@ -11509,32 +11509,32 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+
                                     @php
                                         $subTotal = 0;
+                                        $totalNug = 0;
                                     @endphp
                                     @foreach ($products as $product)
+
                                         @php
-                                            $subTotal += $product->pivot->product_qty * $product->pivot->product_price;
-                                        @endphp
+                                            $subTotal += $product->nug  * ($product->pivot->product_price != 0 ? $product->pivot->product_price : $product->price );
+                                            $totalNug += $product->nug
+
+                                      @endphp
                                         <tr>
                                             <td class="text-center">{{$loop->index+1}}</td>
-                                            <td>{{ $product->name }}</td>
-                                            <td class="text-right">
-                                                @if ($product->nug != 0)
-                                                    {{ number_format($product->pivot->product_qty / $product->nug , 2 , '.' , ',') }}
-                                                @else
-                                                    {{ $product->pivot->product_qty }}
-                                                @endif
 
-                                            </td>
-                                            <td class="text-right">{{$product->pivot->product_qty}}</td>
-                                            <td class="text-right">{{$product->pivot->product_qty}}</td>
-                                            <td class="text-right">{{$product->pivot->product_qty}}</td>
-                                            <td class="text-right">{{ number_format($product->pivot->product_price  , 2 , '.' , ',') }}</td>
+                                            <td>{{ $product->name }}</td>
+                                            <td class="text-right">{{ number_format($product->nug , 2 , '.' , ',') }} </td>
+                                            <td class="text-right">{{$product->net_weight}}</td>
+                                            <td class="text-right">{{$product->gross_weight	}}</td>
+                                            <td class="text-right">{{ number_format(($product->pivot->product_price != 0 ? $product->pivot->product_price :  $product->price) , 2 , '.' , ',') }}</td>
                                             <td class="text-right">
-                                                {{ number_format($product->pivot->product_qty * $product->pivot->product_price  , 2 , '.' , ',')}}
+                                                {{ number_format((float)($product->nug * ($product->pivot->product_price != 0 ? $product->pivot->product_price : $product->price )) , 2 , '.' , ',')}}
                                             </td>
                                         </tr>
+                                    {{-- @dd($product->nug , ($product->pivot->product_price != 0 ? $product->pivot->product_pric : $product->price )) --}}
+
                                     @endforeach
                                 </tbody>
                             </table>
@@ -11553,8 +11553,8 @@
                                 <p>Subtotal : {{ number_format($subTotal  , 2 , '.' , ',') }}</p>
                                 {{-- <p>Discount (10%) : $101 </p> --}}
                                 {{-- <p>VAT (8%) : $73 </p> --}}
-                                <p>Bardana ({{$ledger->bardana}} x 20): {{number_format($ledger->bardana * 20  , 2 , '.' , ',') }} </p>
-                                <p>Labour ({{$ledger->labour}} x 15): {{number_format($ledger->labour * 15   , 2 , '.' , ',')}} </p>
+                                <p>Bardana : {{number_format($ledger->bardana * $totalNug  , 2 , '.' , ',') }} </p>
+                                <p>Labour : {{number_format($ledger->labour * $totalNug   , 2 , '.' , ',')}} </p>
                                 <p>Total : Rs. {{number_format($ledger->total_amount   , 2 , '.' , ',') }} </p>
                             </div>
                         </div>

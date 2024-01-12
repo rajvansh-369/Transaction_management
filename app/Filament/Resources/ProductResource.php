@@ -6,6 +6,7 @@ use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use Filament\Forms;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -29,9 +30,18 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('price')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('nug')
-                    ->required()
-                    ->maxLength(255),
+                Fieldset::make('Weight Management')
+                    ->schema([
+                        Forms\Components\TextInput::make('nug')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('net_weight')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('gross_weight')
+                            ->required()
+                            ->maxLength(255),
+                    ])->columns(3)
             ]);
     }
 
