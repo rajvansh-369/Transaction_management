@@ -193,8 +193,8 @@ class LedgerResource extends Resource
                     ->searchable(),
                 IconColumn::make('is_paid')
                     ->boolean()
-                    ->trueIcon('heroicon-o-check-badge')
-                    ->falseIcon('icomoon-cross'),
+                    ->trueIcon('go-check-circle-16')
+                    ->falseIcon('fwb-o-x-circle'),
 
 
 

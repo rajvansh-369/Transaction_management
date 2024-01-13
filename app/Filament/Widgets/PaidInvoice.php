@@ -17,8 +17,20 @@ class PaidInvoice extends BaseWidget
         $totalLedger = Ledger::count();
 
         return [
-            Stat::make('Un-Paid Invoice', $notPaidLedger),
-            Stat::make('Paid Invoice', $paidLedger),
+            Stat::make('Un-Paid Invoice', $notPaidLedger)
+                ->Icon('pepicon-circle-big-filled-circle')
+                ->color('danger')
+                // ->extraAttributes([
+                //     'class' => 'cursor-pointer',
+                //     'wire:click' => "\$dispatch('setStatusFilter', { filter: 'processed' })",
+                // ])
+                // ->toHtml()
+                ,
+            Stat::make('Paid Invoice', $paidLedger) ->Icon('pepicon-circle-big-filled-circle')
+            ->color('danger'),
+                // ->description('7% increase')
+                // ->descriptionIcon('heroicon-m-arrow-trending-down')
+                // ->color('danger'),
             Stat::make('Total Invoice', $totalLedger),
         ];
     }

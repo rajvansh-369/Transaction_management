@@ -9,8 +9,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "actb/blade-github-octicons": "^4.2",
         "barryvdh/laravel-dompdf": "^2.0",
         "codeat3/blade-carbon-icons": "^2.17",
+        "codeat3/blade-pepicons": "^1.4",
         "filament/filament": "3.1",
         "flowframe/laravel-trend": "^0.1.5",
         "guzzlehttp/guzzle": "^7.2",
@@ -18,7 +20,8 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.3",
-        "nerdroid23/blade-icomoon": "^1.1"
+        "nerdroid23/blade-icomoon": "^1.1",
+        "themesberg/flowbite-blade-icons": "^1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
