@@ -57,6 +57,8 @@ class DueInvoiceTable extends BaseWidget
                     ->sortable(),
             ])
             ->actions([
+                Tables\Actions\EditAction::make()
+                ->url(fn (Ledger $requset): string => url('admin/ledgers/'.$requset->id."/edit")),
                 Action::make('feature')
                     ->label('Download PDF')
                     ->url(fn (Ledger $requset): string => route('pdf', ['id' => $requset->id]))
