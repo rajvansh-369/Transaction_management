@@ -2,7 +2,10 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Ledger;
 use Filament\Widgets\ChartWidget;
+use Flowframe\Trend\Trend;
+use Flowframe\Trend\TrendValue;
 
 class DueInvoiceChart extends ChartWidget
 {
@@ -12,11 +15,21 @@ class DueInvoiceChart extends ChartWidget
 
     protected function getData(): array
     {
+
+         // Totals per month
+         $data = Trend::query(Ledger::where("is_paid" , 0))
+         ->between(
+             start: now()->startOfYear(),
+             end: now()->endOfYear(),
+         )
+         ->perMonth()
+         ->count();
+
         return [
             'datasets' => [
                 [
                     'label' => 'Un-Paid Invoice',
-                    'data' => [0, 10, 5, 2, 21, 32, 45, 74, 65, 45, 77, 89],
+                    'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
                     'backgroundColor' => 'red',
                     'borderColor' => 'red',
                 ],

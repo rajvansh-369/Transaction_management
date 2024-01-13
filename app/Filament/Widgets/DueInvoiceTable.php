@@ -16,7 +16,7 @@ class DueInvoiceTable extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
-            ->query(LedgerResource::getEloquentQuery()->where('is_paid',0))
+            ->query(LedgerResource::getEloquentQuery()->where('is_paid',0)->where('total_amount' ,"!=" , ""))
             ->defaultPaginationPageOption(option : 5)
             ->defaultSort(column : "created_at" ,direction:"asc")
             ->columns([

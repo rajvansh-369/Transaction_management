@@ -51,9 +51,16 @@ class ProductResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('price')
-                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('nug')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('gross_weight')
+                    ->label("G.W.")
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('net_weight')
+                    ->label("N.W.")
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('price')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

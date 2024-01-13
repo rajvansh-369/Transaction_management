@@ -2,19 +2,36 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Ledger;
 use Filament\Widgets\ChartWidget;
+use Flowframe\Trend\Trend;
+use Flowframe\Trend\TrendValue;
 
 class TotalInvoiceChart extends ChartWidget
 {
     protected static ?string $heading = 'Invoice';
     protected static ?int $sort = 2;
+    public ?string $filter = 'today';
+
+
     protected function getData(): array
     {
+
+
+        // Totals per month
+        $data = Trend::model(Ledger::class)
+            ->between(
+                start: now()->startOfYear(),
+                end: now()->endOfYear(),
+            )
+            ->perMonth()
+            ->count();
+
         return [
             'datasets' => [
                 [
                     'label' => 'Total Invoice',
-                    'data' => [0, 10, 5, 2, 21, 32, 45, 74, 65, 45, 77, 89],
+                    'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
                     'backgroundColor' => 'red',
                     'borderColor' => 'red',
                 ],
@@ -27,4 +44,13 @@ class TotalInvoiceChart extends ChartWidget
     {
         return 'line';
     }
+
+    protected function getFilters(): ?array
+{
+    return [
+        'perDay' => 'Today',
+        'perMonth' => 'Last month',
+        'perYear' => 'This year',
+    ];
+}
 }
