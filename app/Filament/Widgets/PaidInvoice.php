@@ -20,14 +20,16 @@ class PaidInvoice extends BaseWidget
             Stat::make('Un-Paid Invoice', $notPaidLedger)
                 ->Icon('pepicon-circle-big-filled-circle')
                 ->color('danger')
-                // ->extraAttributes([
-                //     'class' => 'cursor-pointer',
-                //     'wire:click' => "\$dispatch('setStatusFilter', { filter: 'processed' })",
-                // ])
+                ->extraAttributes([
+                    'class' => 'red_stat',
+                ])
                 // ->toHtml()
                 ,
             Stat::make('Paid Invoice', $paidLedger) ->Icon('pepicon-circle-big-filled-circle')
-            ->color('danger'),
+            ->color('danger')
+            ->extraAttributes([
+                'class' => 'green_stat',
+            ]),
                 // ->description('7% increase')
                 // ->descriptionIcon('heroicon-m-arrow-trending-down')
                 // ->color('danger'),
