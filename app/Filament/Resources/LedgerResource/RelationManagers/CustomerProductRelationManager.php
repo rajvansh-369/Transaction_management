@@ -31,7 +31,7 @@ class CustomerProductRelationManager extends RelationManager
                 TextInput::make('product_qty')->label("Nug"),
                    TextInput::make('product_price')
                    ->numeric()
-                   ->label('Rate'),
+                   ->label('Rate/Kg'),
 
             ]);
     }
@@ -101,7 +101,7 @@ class CustomerProductRelationManager extends RelationManager
                    TextInput::make('product_qty')->label("Nug"),
                    TextInput::make('product_price')
                    ->numeric()
-                   ->label('Rate'),
+                   ->label('Rate/Kg'),
                 ]),
             ])
             ->actions([
