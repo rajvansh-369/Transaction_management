@@ -11518,7 +11518,7 @@
 
                                         @php
                                             $subTotal += (float)($product->pivot->product_qty * ( $product->pivot->product_price  * $product->nug ));
-                                            $totalNug += $product->pivot->product_price
+                                            $totalNug += $product->pivot->product_qty
 
                                       @endphp
                                         <tr>
