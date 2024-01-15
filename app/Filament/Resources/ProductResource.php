@@ -63,9 +63,6 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('peti')
                 ->label('Peti Weight (/Kg)')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('price')
-                ->label('Price/Kg')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
