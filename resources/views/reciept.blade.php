@@ -11525,7 +11525,7 @@
                                             <td class="text-center">{{$loop->index+1}}</td>
 
                                             <td>{{ $product->name }}</td>
-                                            <td class="text-right">{{ number_format($product->pivot->product_price , 2 , '.' , ',') }} </td>
+                                            <td class="text-right">{{ number_format($product->pivot->product_qty , 2 , '.' , ',') }} </td>
                                             <td class="text-right">{{$product->pivot->product_qty* $product->nug}}</td>
                                             <td class="text-right">{{($product->pivot->product_qty* $product->nug) + $product->peti	}}</td>
                                             <td class="text-right">{{ number_format($product->pivot->product_price  , 2 , '.' , ',') }}</td>
