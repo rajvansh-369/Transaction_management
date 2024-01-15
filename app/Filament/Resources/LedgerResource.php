@@ -84,19 +84,20 @@ class LedgerResource extends Resource
                 Fieldset::make('Price Calculation')
                     ->schema([
                         TextInput::make('labour')
+                        ->label('Labour Charge(/Nug)')
                             ->required()
 
                             ->afterStateUpdated(function (Set $set, ?Ledger $record, $state, Get $get) {
 
                                 $totalPrice = $record->total_price->sum(function ($product) {
-                                    return ($product->pivot->product_price != 0 ? $product->pivot->product_price : $product->price ) * $product->nug;
+                                    return $product->pivot->product_price  * $product->pivot->product_qty *  $product->nug;
                                 });
 
                                 $totalNug = $record->products->sum(function ($product) {
-                                    return  $product->nug;
+                                    return  $product->pivot->product_qty;
                                 });
 
-                                // dd((integer)$get('total_amount') , (integer)$get('total_credit'));
+                                // dd($totalPrice , $totalNug);
                                 if ($get('bardana') != '' || $get('total_due') != '') {
                                     $set('total_amount', (float)$totalPrice + $state * $totalNug + (integer)$get('bardana') * $totalNug);
 
@@ -110,17 +111,17 @@ class LedgerResource extends Resource
                             ->numeric()
                             ->live(),
                         TextInput::make('bardana')
+                        ->label('Bardana Charge(/Nug)')
                             ->required()
 
                             ->afterStateUpdated(function (Set $set, ?Ledger $record, $state, Get $get) {
 
                                 $totalPrice = $record->total_price->sum(function ($product) {
-                                    return  ($product->pivot->product_price != 0 ? $product->pivot->product_price : $product->price ) * $product->nug;
+                                    return $product->pivot->product_price  * $product->pivot->product_qty *  $product->nug;
                                 });
 
-
                                 $totalNug = $record->products->sum(function ($product) {
-                                    return  $product->nug;
+                                    return  $product->pivot->product_qty;
                                 });
                                 // dd($get('total_credit'));
                                 if ($get('labour') != '' || $get('total_due') != '') {

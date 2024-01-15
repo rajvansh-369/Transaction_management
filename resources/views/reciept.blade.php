@@ -11517,20 +11517,20 @@
                                     @foreach ($products as $product)
 
                                         @php
-                                            $subTotal += $product->nug  * ($product->pivot->product_price != 0 ? $product->pivot->product_price : $product->price );
-                                            $totalNug += $product->nug
+                                            $subTotal += (float)($product->pivot->product_qty * ( $product->pivot->product_price  * $product->nug ));
+                                            $totalNug += $product->pivot->product_price
 
                                       @endphp
                                         <tr>
                                             <td class="text-center">{{$loop->index+1}}</td>
 
                                             <td>{{ $product->name }}</td>
-                                            <td class="text-right">{{ number_format($product->nug , 2 , '.' , ',') }} </td>
-                                            <td class="text-right">{{$product->net_weight}}</td>
-                                            <td class="text-right">{{$product->gross_weight	}}</td>
-                                            <td class="text-right">{{ number_format(($product->pivot->product_price != 0 ? $product->pivot->product_price :  $product->price) , 2 , '.' , ',') }}</td>
+                                            <td class="text-right">{{ number_format($product->pivot->product_price , 2 , '.' , ',') }} </td>
+                                            <td class="text-right">{{$product->pivot->product_qty* $product->nug}}</td>
+                                            <td class="text-right">{{($product->pivot->product_qty* $product->nug) + $product->peti	}}</td>
+                                            <td class="text-right">{{ number_format($product->pivot->product_price  , 2 , '.' , ',') }}</td>
                                             <td class="text-right">
-                                                {{ number_format((float)($product->nug * ($product->pivot->product_price != 0 ? $product->pivot->product_price : $product->price )) , 2 , '.' , ',')}}
+                                                {{ number_format((float)($product->pivot->product_qty * ( $product->pivot->product_price  * $product->nug ) ) , 2 , '.' , ',')}}
                                             </td>
                                         </tr>
                                     {{-- @dd($product->nug , ($product->pivot->product_price != 0 ? $product->pivot->product_pric : $product->price )) --}}

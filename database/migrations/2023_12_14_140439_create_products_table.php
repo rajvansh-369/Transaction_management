@@ -15,9 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('price');
-            $table->float('net_weight');
-            $table->float('gross_weight');
             $table->integer('nug');
+            $table->float('peti');
             $table->timestamps();
         });
     }

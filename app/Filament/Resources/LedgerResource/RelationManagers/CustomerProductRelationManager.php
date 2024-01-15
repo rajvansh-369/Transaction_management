@@ -26,16 +26,12 @@ class CustomerProductRelationManager extends RelationManager
         return $form
             ->schema([
 
-
-               TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-               TextInput::make('product_qty')
-                     ->label("Nug")
-                     ->hidden()
-                    ->maxLength(255),
-               TextInput::make('product_price')
-                    ->maxLength(255),
+                Select::make('name')
+                ->options(Product::all()->pluck('name', 'id'))->searchable(),
+                TextInput::make('product_qty')->label("Nug"),
+                   TextInput::make('product_price')
+                   ->numeric()
+                   ->label('Rate'),
 
             ]);
     }
@@ -50,58 +46,41 @@ class CustomerProductRelationManager extends RelationManager
                 ->label("Nug")
                  ->getStateUsing(function ($record, ?Product $product) {
 
-                    // dd($product);
+                    // dd($record);
                     // if($record->product_qty != 0 ){
 
                     //     return $record->product_qty ;
                     // }else{
 
-                        return $product->nug ;
+                        return $record->pivot->product_qty ;
 
                     // }
                 }),
                 TextColumn::make('net_weight')
-                ->label('Net Weight')
+                ->label('Net Weight (KG)')
                 ->getStateUsing(function ($record, ?Product $product) {
 
-                    return $record->net_weight;
+                    return $record->pivot->product_qty * $product->nug;
                     // dd($product);
 
                 }),
                 TextColumn::make('gross_weight')
-                ->label('Gross Weight')
+                ->label('Gross Weight (KG)')
                 ->getStateUsing(function ($record, ?Product $product) {
 
-                    return $record->gross_weight;
+                    return ($record->pivot->product_qty *  $product->nug ) +  ($product->peti * $record->pivot->product_qty) ;
                     // dd($product);
 
                 }),
                 TextColumn::make('price')
-                ->getStateUsing(function ($record, ?Product $product) {
-
-                    // dd($product);
-                    if( $record->product_price != 0  ){
-
-                        return $record->product_price ;
-                    }else{
-
-                        return $product->price ;
-
-                    }
-                }),
-                TextColumn::make('rate')
                 ->label('Total Price')
                 ->getStateUsing(function ($record, ?Product $product) {
 
-                    // dd($product);
-                    if( $record->product_price != 0  ){
+                    // dd($record->product_price , $product->nug , $record->nug );
 
-                        return $record->product_price * $product->nug ;
-                    }else{
 
-                        return $product->price * $product->nug ;
+                        return $record->product_price * ($product->nug * $record->pivot->product_qty  );
 
-                    }
                 }),
 
 
@@ -119,7 +98,7 @@ class CustomerProductRelationManager extends RelationManager
                 )
                 ->form(fn (AttachAction $action): array => [
                     $action->getRecordSelect(),
-                   TextInput::make('product_qty')->label("Nug")->hidden(),
+                   TextInput::make('product_qty')->label("Nug"),
                    TextInput::make('product_price')
                    ->numeric()
                    ->label('Rate'),
@@ -141,7 +120,8 @@ class CustomerProductRelationManager extends RelationManager
                 Tables\Actions\AttachAction::make()
                 ->form(fn (AttachAction $action): array => [
                     $action->getRecordSelect(),
-                   TextInput::make('product_qty')->required()
+                   TextInput::make('product_qty')->required(),
+                   TextInput::make('product_price')->required()
                   ,
                 ]),
             ]);
