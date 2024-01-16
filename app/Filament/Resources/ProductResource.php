@@ -58,7 +58,7 @@ class ProductResource extends Resource
                                 $set('peti',  $get('petiKG') + (($state ?? 0)/1000));
                             })
                             ->live()
-                            ->label("Peti Weight in G")
+                            ->label("Peti Weight in Grams")
                             ->maxLength(255),
                         Forms\Components\TextInput::make('peti')
                             ->required()
@@ -72,7 +72,7 @@ class ProductResource extends Resource
                         //     ->required()
                         //     ->maxLength(255),
 
-                    ])->columns(3)
+                    ])->columns(4)
             ]);
     }
 
