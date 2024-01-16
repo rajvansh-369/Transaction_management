@@ -8,6 +8,8 @@ use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -36,16 +38,40 @@ class ProductResource extends Resource
                             ->required()
                             ->label("Weight per NUG (KG)")
                             ->maxLength(255),
+
+                        Forms\Components\TextInput::make('petiKG')
+                            ->required()
+                            ->afterStateUpdated(function (Set $set,  $state, Get $get) {
+
+                                // dd($get('petiG'),(($state ?? 0) /1000));
+                                $set('peti',  ($state + (($get('petiG') ?? 0) /1000)));
+                            })
+                            ->live()
+                            ->label("Peti Weight in KG")
+                            ->maxLength(255),
+
+                        Forms\Components\TextInput::make('petiG')
+                            ->required()
+                            ->afterStateUpdated(function (Set $set,  $state, Get $get) {
+
+                                // dd($get('petiKG '), (($state ?? 0)/1000) );
+                                $set('peti',  $get('petiKG') + (($state ?? 0)/1000));
+                            })
+                            ->live()
+                            ->label("Peti Weight in G")
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('peti')
+                            ->required()
+                            ->readonly()
+                            ->label('Total Peti Weight per NUG (KG)')
+                            ->maxLength(255),
                         // Forms\Components\TextInput::make('net_weight')
                         //     ->required()
                         //     ->maxLength(255),
                         // Forms\Components\TextInput::make('gross_weight')
                         //     ->required()
                         //     ->maxLength(255),
-                        Forms\Components\TextInput::make('peti')
-                            ->required()
-                            ->label('Peti Weight per NUG (KG)')
-                            ->maxLength(255),
+
                     ])->columns(3)
             ]);
     }
@@ -58,10 +84,10 @@ class ProductResource extends Resource
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('nug')
-                ->label('Kg/NUG')
+                    ->label('Kg/NUG')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('peti')
-                ->label('Peti Weight (/Kg)')
+                    ->label('Peti Weight (/Kg)')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
