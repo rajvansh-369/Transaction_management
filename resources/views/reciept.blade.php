@@ -11455,6 +11455,7 @@
                 <div class="panel panel-default invoice" id="invoice">
                     <div class="panel-body">
 
+                        <h1 class="text-center">JMD</h1>
                         <div class="row">
                             @if ($ledger->is_paid)
                             <div class="invoice-ribbon">
