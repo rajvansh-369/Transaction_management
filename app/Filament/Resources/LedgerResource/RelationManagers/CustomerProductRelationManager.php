@@ -8,6 +8,8 @@ use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -28,7 +30,7 @@ class CustomerProductRelationManager extends RelationManager
 
                 Select::make('name')
                 ->options(Product::all()->pluck('name', 'id'))->searchable(),
-                TextInput::make('product_qty')->label("Nug"),
+                TextInput::make('product_qty')->label("Total Weight In KG"),
                    TextInput::make('product_price')
                    ->numeric()
                    ->label('Rate/Kg'),
@@ -52,7 +54,7 @@ class CustomerProductRelationManager extends RelationManager
                     //     return $record->product_qty ;
                     // }else{
 
-                        return $record->pivot->product_qty ;
+                        return $record->pivot->product_qty/$record->nug ;
 
                     // }
                 }),
@@ -60,7 +62,8 @@ class CustomerProductRelationManager extends RelationManager
                 ->label('Net Weight (KG)')
                 ->getStateUsing(function ($record, ?Product $product) {
 
-                    return $record->pivot->product_qty * $product->nug;
+                    return $record->pivot->product_qty;
+                    // return $record->pivot->product_qty * $product->nug;
                     // dd($product);
 
                 }),
@@ -68,7 +71,7 @@ class CustomerProductRelationManager extends RelationManager
                 ->label('Gross Weight (KG)')
                 ->getStateUsing(function ($record, ?Product $product) {
 
-                    return ($record->pivot->product_qty *  $product->nug ) +  ($product->peti * $record->pivot->product_qty) ;
+                    return ($record->pivot->product_qty ) +  ($product->peti * $record->pivot->product_qty) ;
                     // dd($product);
 
                 }),
@@ -79,7 +82,7 @@ class CustomerProductRelationManager extends RelationManager
                     // dd($record->product_price , $product->nug , $record->nug );
 
 
-                        return $record->product_price * ($product->nug * $record->pivot->product_qty  );
+                        return $record->product_price * ($record->pivot->product_qty  );
 
                 }),
 
@@ -98,7 +101,7 @@ class CustomerProductRelationManager extends RelationManager
                 )
                 ->form(fn (AttachAction $action): array => [
                     $action->getRecordSelect(),
-                   TextInput::make('product_qty')->label("Nug"),
+                   TextInput::make('product_qty')->label("Total Weight In KG"),
                    TextInput::make('product_price')
                    ->numeric()
                    ->label('Rate/Kg'),
