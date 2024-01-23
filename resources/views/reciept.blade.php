@@ -11500,8 +11500,8 @@
                                 <thead>
                                     <tr>
                                         <th class="" style="width:5%">#</th>
-                                        <th class="text-center" style="width:30%">Item</th>
-                                        <th  class="text-right" style="width:10%">Nugs</th>
+                                        <th class="text-center" style="width:250%">Item</th>
+                                        <th  class="text-right" style="width:15%">Nugs</th>
                                         {{-- <th class="text-right" style="width:15%">Qty</th> --}}
                                         <th class="text-right" style="width:10%">N.W.</th>
                                         {{-- <th class="text-right" style="width:15%">G.W.</th> --}}
@@ -11545,7 +11545,7 @@
                                     <tr style="background-color:gray" class="table-dark">
                                         <th  class="" style="width:5%"></th>
                                         <th style="font-weight:bold; width:30% ; padding-left:20px" >TOTAL : </th>
-                                        <th style="font-weight:bold; width:10%; padding-left:20px" class="text-center">{{$totalNug}} NUG</th>
+                                        <th style="font-weight:bold; width:15%; padding-left:20px" class="text-center">{{$totalNug}} NUG</th>
                                         <th style="font-weight:bold; width:10%" class="text-center"></th>
                                         {{-- <th class="text-right" style="width:15%"></th> --}}
                                         <th class="text-right" style="width:15%"></th>
