@@ -11500,7 +11500,7 @@
                                 <thead>
                                     <tr>
                                         <th class="" style="width:5%">#</th>
-                                        <th class="text-center" style="width:250%">Item</th>
+                                        <th class="" style="width:25%">Item</th>
                                         <th  class="text-right" style="width:15%">Nugs</th>
                                         {{-- <th class="text-right" style="width:15%">Qty</th> --}}
                                         <th class="text-right" style="width:10%">N.W.</th>
