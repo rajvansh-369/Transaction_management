@@ -11481,7 +11481,7 @@
                                 <p>{{ $customer->city }}</p>
                                 <p>{{ $customer->state }} - India</p>
                                 <p>Phone: {{ $customer->phone }}</p>
-                                <p>Email: {{ $customer->email }}</p>
+                                {{-- <p>Email: {{ $customer->email }}</p> --}}
 
                             </div>
 
