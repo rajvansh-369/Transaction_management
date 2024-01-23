@@ -11504,7 +11504,7 @@
                                         <th  class="text-right" style="width:15%">Nugs</th>
                                         {{-- <th class="text-right" style="width:15%">Qty</th> --}}
                                         <th class="text-right" style="width:15%">N.W.</th>
-                                        <th class="text-right" style="width:15%">G.W.</th>
+                                        {{-- <th class="text-right" style="width:15%">G.W.</th> --}}
                                         <th class="text-right" style="width:15%">Rate</th>
                                         <th class="text-right" style="width:15%">Total Price</th>
                                     </tr>
@@ -11530,7 +11530,7 @@
                                             <td>{{ $product->name }}</td>
                                             <td class="text-right">{{ number_format($product->pivot->product_qty/$product->nug , 2 , '.' , ',') }} </td>
                                             <td class="text-right">{{$product->pivot->product_qty}}</td>
-                                            <td class="text-right">{{($product->pivot->product_qty) + $product->peti	}}</td>
+                                            {{-- <td class="text-right">{{($product->pivot->product_qty) + $product->peti	}}</td> --}}
                                             <td class="text-right">{{ number_format($product->pivot->product_price  , 2 , '.' , ',') }}</td>
                                             <td class="text-right">
                                                 {{ number_format((float)($product->pivot->product_qty * ( $product->pivot->product_price) ) , 2 , '.' , ',')}}
@@ -11542,12 +11542,12 @@
                                 </tbody>
                                 <tfoot>
                                     <tr></tr>
-                                    <tr>
-                                        <th class="" style="width:5%"></th>
-                                        <th style="font-weight:bold; width:20%" >TOTAL : </th>
-                                        <th style="font-weight:bold; width:15%" class="text-center">{{$totalNug}} NUG</th>
+                                    <tr style="background-color:gray" class="table-dark">
+                                        <th  class="" style="width:5%"></th>
+                                        <th style="font-weight:bold; width:20% ; padding-left:20px" >TOTAL : </th>
+                                        <th style="font-weight:bold; width:15%; padding-left:40px" class="text-center">{{$totalNug}} NUG</th>
                                         <th style="font-weight:bold; width:15%" class="text-center"></th>
-                                        <th class="text-right" style="width:15%"></th>
+                                        {{-- <th class="text-right" style="width:15%"></th> --}}
                                         <th class="text-right" style="width:15%"></th>
                                         <th class="text-right" style="width:15%"></th>
                                     </tr>

@@ -11462,9 +11462,9 @@
                                 <div class="ribbon-inner">PAID</div>
                             </div>
                             @endif
-                            <!-- {{-- <div class="col-sm-6 top-left">
+                            {{-- <div class="col-sm-6 top-left">
                                 <i class="fa fa-rocket"></i>
-                            </div> --}} -->
+                            </div> --}}
 
                             <div class="col-sm-6 top-right">
                                 <h3 class="marginright" style="margin-top: 22px;">INVOICE-{{ $ledger->bill_no }}</h3>
@@ -11499,9 +11499,9 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th class="text-center" style="width:5%">#</th>
-                                        <th style="width:30%">Item</th>
-                                        <th class="text-right" style="width:15%">Nugs</th>
+                                        <th class="" style="width:5%">#</th>
+                                        <th class="text-center" style="width:20%">Item</th>
+                                        <th  class="text-right" style="width:15%">Nugs</th>
                                         {{-- <th class="text-right" style="width:15%">Qty</th> --}}
                                         <th class="text-right" style="width:15%">N.W.</th>
                                         <th class="text-right" style="width:15%">G.W.</th>
@@ -11514,24 +11514,26 @@
                                     @php
                                         $subTotal = 0;
                                         $totalNug = 0;
+                                        $totalWeight = 0;
                                     @endphp
                                     @foreach ($products as $product)
 
                                         @php
-                                            $subTotal += (float)($product->pivot->product_qty * ( $product->pivot->product_price  * $product->nug ));
-                                            $totalNug += $product->pivot->product_qty
+                                            $subTotal += (float)($product->pivot->product_qty * ( $product->pivot->product_price));
+                                            $totalNug += $product->pivot->product_qty/$product->nug;
+                                            $totalWeight += $product->pivot->product_qty;
 
                                       @endphp
                                         <tr>
                                             <td class="text-center">{{$loop->index+1}}</td>
 
                                             <td>{{ $product->name }}</td>
-                                            <td class="text-right">{{ number_format($product->pivot->product_qty , 2 , '.' , ',') }} </td>
-                                            <td class="text-right">{{$product->pivot->product_qty* $product->nug}}</td>
-                                            <td class="text-right">{{($product->pivot->product_qty* $product->nug) + $product->peti	}}</td>
+                                            <td class="text-right">{{ number_format($product->pivot->product_qty/$product->nug , 2 , '.' , ',') }} </td>
+                                            <td class="text-right">{{$product->pivot->product_qty}}</td>
+                                            <td class="text-right">{{($product->pivot->product_qty) + $product->peti	}}</td>
                                             <td class="text-right">{{ number_format($product->pivot->product_price  , 2 , '.' , ',') }}</td>
                                             <td class="text-right">
-                                                {{ number_format((float)($product->pivot->product_qty * ( $product->pivot->product_price  * $product->nug ) ) , 2 , '.' , ',')}}
+                                                {{ number_format((float)($product->pivot->product_qty * ( $product->pivot->product_price) ) , 2 , '.' , ',')}}
                                             </td>
                                         </tr>
                                     {{-- @dd($product->nug , ($product->pivot->product_price != 0 ? $product->pivot->product_pric : $product->price )) --}}
@@ -11539,11 +11541,15 @@
                                     @endforeach
                                 </tbody>
                                 <tfoot>
-                                    <!-- <tr></tr> -->
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td class="text-right">Total NUG : 40</td>
+                                    <tr></tr>
+                                    <tr style="background-color:gray" class="table-dark">
+                                        <th  class="" style="width:5%"></th>
+                                        <th style="font-weight:bold; width:20% ; margin-left:10px" >TOTAL : </th>
+                                        <th style="font-weight:bold; width:15%; margin-left:10px" class="text-center">{{$totalNug}} NUG</th>
+                                        <th style="font-weight:bold; width:15%" class="text-center"></th>
+                                        <th class="text-right" style="width:15%"></th>
+                                        <th class="text-right" style="width:15%"></th>
+                                        <th class="text-right" style="width:15%"></th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -11552,7 +11558,7 @@
 
                         <div class="row">
                             <div class="col-xs-6 margintop">
-                                <p class="lead marginbottom">THANK YOU!</p>
+                                {{-- <p class="lead marginbottom">THANK YOU!</p> --}}
 
                                 {{-- <button class="btn btn-success" id="invoice-print"><i class="fa fa-print"></i> Print
                                     Invoice</button>
@@ -11562,7 +11568,7 @@
                                 <p>Subtotal : {{ number_format($subTotal  , 2 , '.' , ',') }}</p>
                                 {{-- <p>Discount (10%) : $101 </p> --}}
                                 {{-- <p>VAT (8%) : $73 </p> --}}
-                                <p>Total NUG : {{number_format($totalNug  , 2 , '.' , ',') }} </p>
+                                {{-- <p>Total NUG : {{number_format($totalNug  , 2 , '.' , ',') }} </p> --}}
                                 <p>Bardana ({{$ledger->bardana}}) : {{number_format($ledger->bardana * $totalNug  , 2 , '.' , ',') }} </p>
                                 <p>Labour ({{$ledger->labour}}): {{number_format($ledger->labour * $totalNug   , 2 , '.' , ',')}} </p>
                                 <p>Total : Rs. {{number_format($ledger->total_amount   , 2 , '.' , ',') }} </p>
