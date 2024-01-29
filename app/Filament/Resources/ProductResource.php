@@ -39,32 +39,32 @@ class ProductResource extends Resource
                             ->label("Weight per NUG (KG)")
                             ->maxLength(255),
 
-                        Forms\Components\TextInput::make('petiKG')
-                            ->required()
-                            ->afterStateUpdated(function (Set $set,  $state, Get $get) {
+                        // Forms\Components\TextInput::make('petiKG')
+                        //     ->required()
+                        //     ->afterStateUpdated(function (Set $set,  $state, Get $get) {
 
-                                // dd($get('petiG'),(($state ?? 0) /1000));
-                                $set('peti',  ($state + (($get('petiG') ?? 0) /1000)));
-                            })
-                            ->live()
-                            ->label("Peti Weight in KG")
-                            ->maxLength(255),
+                        //         // dd($get('petiG'),(($state ?? 0) /1000));
+                        //         $set('peti',  ($state + (($get('petiG') ?? 0) /1000)));
+                        //     })
+                        //     ->live()
+                        //     ->label("Peti Weight in KG")
+                        //     ->maxLength(255),
 
-                        Forms\Components\TextInput::make('petiG')
-                            ->required()
-                            ->afterStateUpdated(function (Set $set,  $state, Get $get) {
+                        // Forms\Components\TextInput::make('petiG')
+                        //     ->required()
+                        //     ->afterStateUpdated(function (Set $set,  $state, Get $get) {
 
-                                // dd($get('petiKG '), (($state ?? 0)/1000) );
-                                $set('peti',  $get('petiKG') + (($state ?? 0)/1000));
-                            })
-                            ->live()
-                            ->label("Peti Weight in Grams")
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('peti')
-                            ->required()
-                            ->readonly()
-                            ->label('Total Peti Weight per NUG (KG)')
-                            ->maxLength(255),
+                        //         // dd($get('petiKG '), (($state ?? 0)/1000) );
+                        //         $set('peti',  $get('petiKG') + (($state ?? 0)/1000));
+                        //     })
+                        //     ->live()
+                        //     ->label("Peti Weight in Grams")
+                        //     ->maxLength(255),
+                        // Forms\Components\TextInput::make('peti')
+                        //     ->required()
+                        //     ->readonly()
+                        //     ->label('Total Peti Weight per NUG (KG)')
+                        //     ->maxLength(255),
                         // Forms\Components\TextInput::make('net_weight')
                         //     ->required()
                         //     ->maxLength(255),
