@@ -90,11 +90,11 @@ class LedgerResource extends Resource
                             ->afterStateUpdated(function (Set $set, ?Ledger $record, $state, Get $get) {
 
                                 $totalPrice = $record->total_price->sum(function ($product) {
-                                    return $product->pivot->product_price  * $product->pivot->product_qty *  $product->nug;
+                                    return $product->pivot->product_price  * $product->pivot->product_qty;
                                 });
 
                                 $totalNug = $record->products->sum(function ($product) {
-                                    return  $product->pivot->product_qty;
+                                    return  $product->pivot->product_qty/$product->nug;
                                 });
 
                                 // dd($totalPrice , $totalNug);
@@ -117,11 +117,11 @@ class LedgerResource extends Resource
                             ->afterStateUpdated(function (Set $set, ?Ledger $record, $state, Get $get) {
 
                                 $totalPrice = $record->total_price->sum(function ($product) {
-                                    return $product->pivot->product_price  * $product->pivot->product_qty *  $product->nug;
+                                    return $product->pivot->product_price  * $product->pivot->product_qty;
                                 });
 
                                 $totalNug = $record->products->sum(function ($product) {
-                                    return  $product->pivot->product_qty;
+                                    return  $product->pivot->product_qty/$product->nug;
                                 });
                                 // dd($get('total_credit'));
                                 if ($get('labour') != '' || $get('total_due') != '') {

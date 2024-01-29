@@ -60,7 +60,7 @@ class DueInvoiceTable extends BaseWidget
                 Tables\Actions\EditAction::make()
                 ->url(fn (Ledger $requset): string => url('admin/ledgers/'.$requset->id."/edit")),
                 Action::make('feature')
-                    ->label('Download PDF')
+                    ->label('Print Invoice')
                     ->url(fn (Ledger $requset): string => route('pdf', ['id' => $requset->id]))
                     ->visible(fn (Ledger $request) => $request->total_amount !== null)
             ])
