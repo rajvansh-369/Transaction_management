@@ -99,10 +99,10 @@ class LedgerResource extends Resource
 
                                 // dd($totalPrice , $totalNug);
                                 if ($get('bardana') != '' || $get('total_due') != '') {
-                                    $set('total_amount', (float)$totalPrice + $state * $totalNug + (integer)$get('bardana') * $totalNug);
+                                    $set('total_amount', (float)$totalPrice + $state * $totalNug + (float)$get('bardana') * $totalNug);
 
                                 //   dd($get('total_amount') , $get('total_credit'));
-                                    $set('total_due', (integer)$get('total_amount') - (integer)$get('total_credit'));
+                                    $set('total_due', (float)$get('total_amount') - (float)$get('total_credit'));
                                 } else {
                                     $set('total_amount', (float)$totalPrice + $state * $totalNug);
                                 }
@@ -126,10 +126,10 @@ class LedgerResource extends Resource
                                 // dd($get('total_credit'));
                                 if ($get('labour') != '' || $get('total_due') != '') {
 
-                                    $set('total_amount', (float)$totalPrice + $state * $totalNug + (integer)$get('labour') * $totalNug);
+                                    $set('total_amount', (float)$totalPrice + $state * $totalNug + (float)$get('labour') * $totalNug);
 
 
-                                    $set('total_due', (integer)$get('total_amount') - (integer)$get('total_credit'));
+                                    $set('total_due', (float)$get('total_amount') - (float)$get('total_credit'));
                                 } else {
                                     $set('total_amount', (float)$totalPrice + $state * $totalNug);
                                 }
