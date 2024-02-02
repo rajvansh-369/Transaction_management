@@ -9,8 +9,11 @@ use App\Models\Customer;
 use App\Models\Ledger;
 use App\Models\Product;
 use App\Models\User;
+use Carbon\Carbon;
 use Closure;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
@@ -178,8 +181,17 @@ class LedgerResource extends Resource
                             })
 
                             ->label('Paid'),
-                    ])->columns(3)->visibleOn('edit')
-            ]);
+                    ])->columns(3)->visibleOn('edit'),
+
+                    DatePicker::make('invoice_date')
+                    ->default(function () {
+
+                        $currentDate = Carbon::now();
+                        return $currentDate;
+                    })
+
+
+                ]);
     }
 
     public static function table(Table $table): Table
