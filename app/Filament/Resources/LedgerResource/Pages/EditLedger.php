@@ -14,6 +14,11 @@ class EditLedger extends EditRecord
     {
         return [
             Actions\DeleteAction::make(),
+            Actions\CreateAction::make()
+            ->color("success")
+            ->label("Create New")
+            ->url(env('APP_URL').'admin/ledgers/create'),
         ];
     }
+
 }
