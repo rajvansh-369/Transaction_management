@@ -26,6 +26,7 @@ use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -87,7 +88,7 @@ class LedgerResource extends Resource
                 Fieldset::make('Price Calculation')
                     ->schema([
                         TextInput::make('labour')
-                        ->label('Labour Charge(/Nug)')
+                            ->label('Labour Charge(/Nug)')
                             ->required()
 
                             ->afterStateUpdated(function (Set $set, ?Ledger $record, $state, Get $get) {
@@ -97,14 +98,14 @@ class LedgerResource extends Resource
                                 });
 
                                 $totalNug = $record->products->sum(function ($product) {
-                                    return  $product->pivot->product_qty/$product->nug;
+                                    return  $product->pivot->product_qty / $product->nug;
                                 });
 
                                 // dd($totalPrice , $totalNug);
                                 if ($get('bardana') != '' || $get('total_due') != '') {
                                     $set('total_amount', (float)$totalPrice + $state * $totalNug + (float)$get('bardana') * $totalNug);
 
-                                //   dd($get('total_amount') , $get('total_credit'));
+                                    //   dd($get('total_amount') , $get('total_credit'));
                                     $set('total_due', (float)$get('total_amount') - (float)$get('total_credit'));
                                 } else {
                                     $set('total_amount', (float)$totalPrice + $state * $totalNug);
@@ -114,7 +115,7 @@ class LedgerResource extends Resource
                             ->numeric()
                             ->live(),
                         TextInput::make('bardana')
-                        ->label('Bardana Charge(/Nug)')
+                            ->label('Bardana Charge(/Nug)')
                             ->required()
 
                             ->afterStateUpdated(function (Set $set, ?Ledger $record, $state, Get $get) {
@@ -124,7 +125,7 @@ class LedgerResource extends Resource
                                 });
 
                                 $totalNug = $record->products->sum(function ($product) {
-                                    return  $product->pivot->product_qty/$product->nug;
+                                    return  $product->pivot->product_qty / $product->nug;
                                 });
                                 // dd($get('total_credit'));
                                 if ($get('labour') != '' || $get('total_due') != '') {
@@ -162,7 +163,7 @@ class LedgerResource extends Resource
 
                             // ->required()
                             ->numeric()
-                            ->live(onBlur:true),
+                            ->live(onBlur: true),
 
                         TextInput::make('total_due')
 
@@ -183,7 +184,7 @@ class LedgerResource extends Resource
                             ->label('Paid'),
                     ])->columns(3)->visibleOn('edit'),
 
-                    DatePicker::make('invoice_date')
+                DatePicker::make('invoice_date')
                     ->default(function () {
 
                         $currentDate = Carbon::now();
@@ -191,7 +192,7 @@ class LedgerResource extends Resource
                     })
 
 
-                ]);
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -234,9 +235,24 @@ class LedgerResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])->defaultSort('created_at', 'desc','is_paid' , 'desc')
+            ])->defaultSort('created_at', 'desc', 'is_paid', 'desc')
             ->filters([
-                //
+                Filter::make('created_at')
+                    ->form([
+                        DatePicker::make('created_from'),
+                        DatePicker::make('created_until'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['created_from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                            )
+                            ->when(
+                                $data['created_until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                            );
+                    })
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
