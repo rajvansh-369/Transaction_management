@@ -18,6 +18,7 @@ class DueInvoiceChart extends ChartWidget
 
          // Totals per month
          $data = Trend::query(Ledger::where("is_paid" , 0))
+         ->dateColumn('invoice_date')
          ->between(
              start: now()->startOfYear(),
              end: now()->endOfYear(),

@@ -20,6 +20,7 @@ class TotalInvoiceChart extends ChartWidget
 
         // Totals per month
         $data = Trend::model(Ledger::class)
+        ->dateColumn('invoice_date')
             ->between(
                 start: now()->startOfYear(),
                 end: now()->endOfYear(),
