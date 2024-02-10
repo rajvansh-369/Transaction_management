@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PDFController;
+use App\Http\Controllers\Cronjobs\CronjobController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,3 +23,4 @@ Route::get('/', function () {
 
 
 Route::get('generate-pdf/{id}', [PDFController::class, 'generatePDF'])->name('pdf');
+Route::get('add-tax', [CronjobController::class, 'addTaxOnLedger'])->name('ledger.tax');
