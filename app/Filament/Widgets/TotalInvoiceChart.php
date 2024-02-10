@@ -46,12 +46,12 @@ class TotalInvoiceChart extends ChartWidget
         return 'line';
     }
 
-    protected function getFilters(): ?array
-{
-    return [
-        'perDay' => 'Today',
-        'perMonth' => 'Last month',
-        'perYear' => 'This year',
-    ];
-}
+//     protected function getFilters(): ?array
+// {
+//     return [
+//         'perDay' => 'Today',
+//         'perMonth' => 'Last month',
+//         'perYear' => 'This year',
+//     ];
+// }
 }

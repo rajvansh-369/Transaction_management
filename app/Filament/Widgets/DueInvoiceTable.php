@@ -4,11 +4,15 @@ namespace App\Filament\Widgets;
 
 use App\Filament\Resources\LedgerResource;
 use App\Models\Ledger;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Actions\Action;
 use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
+
+use Filament\Tables\Filters\Filter;
 
 class DueInvoiceTable extends BaseWidget
 {
@@ -38,10 +42,12 @@ class DueInvoiceTable extends BaseWidget
 
                 Tables\Columns\TextColumn::make('labour')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('bardana')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('total_due')
                     ->numeric()
                     ->sortable(),
@@ -51,20 +57,37 @@ class DueInvoiceTable extends BaseWidget
                 Tables\Columns\TextColumn::make('total_amount')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('invoice_date')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                ->url(fn (Ledger $requset): string => url('admin/ledgers/'.$requset->id."/edit")),
+                    ->url(fn (Ledger $requset): string => url('admin/ledgers/' . $requset->id . "/edit")),
                 Action::make('feature')
                     ->label('Print Invoice')
                     ->url(fn (Ledger $requset): string => route('pdf', ['id' => $requset->id]))
                     ->visible(fn (Ledger $request) => $request->total_amount !== null)
             ])
-            ->bulkActions([
-
-            ]);
+            ->filters([
+                Filter::make('created_at')
+                    ->form([
+                        DatePicker::make('created_from'),
+                        DatePicker::make('created_until'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['created_from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                            )
+                            ->when(
+                                $data['created_until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                            );
+                    })
+            ])
+            ->bulkActions([]);
     }
 }
