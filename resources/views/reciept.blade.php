@@ -2074,7 +2074,7 @@
 
         body {
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            font-size: 14px;
+            font-size: 18px;
             line-height: 1.42857143;
             color: #333;
             background-color: #fff
@@ -2277,7 +2277,7 @@
 
         .h1,
         h1 {
-            font-size: 36px
+            font-size: 70px
         }
 
         .h2,
@@ -2311,14 +2311,14 @@
 
         .lead {
             margin-bottom: 20px;
-            font-size: 16px;
+            font-size: 20px !important;
             font-weight: 300;
             line-height: 1.4
         }
 
         @media (min-width:768px) {
             .lead {
-                font-size: 21px
+                font-size: 25px
             }
         }
 
@@ -11487,7 +11487,7 @@
 
                             <div class="col-xs-5 text-right payment-details">
                                 <p class="lead marginbottom payment-info">Payment details</p>
-                                <p>Date: {{\Carbon\Carbon::parse($ledger->created_at)->format('D, M d, Y h:i A') }}</p>
+                                <p>Date: {{\Carbon\Carbon::parse($ledger->invoice_date)->format('D, M d, Y') }}</p>
                                 {{-- <p>VAT: DK888-777 </p> --}}
                                 <p>Total Amount: {{ number_format($ledger->total_amount, 2 , '.' , ',') }}</p>
                                 {{-- <p>Account Name: Flatter</p> --}}
