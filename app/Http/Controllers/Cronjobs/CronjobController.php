@@ -16,14 +16,14 @@ class CronjobController extends Controller
 
         foreach ($allLedgers as $ledger) {
             $totalDue = $ledger['total_due'];
-            $createdAt = $ledger['created_at'];
+            $createdAt = $ledger['invoice_date'];
             $currentDate = now();
 
             $differenceInDays = $createdAt->diffInDays($currentDate);
             if ($totalDue > 0) {
                 if($differenceInDays == 12 && $ledger->interest_amount == 0){
                     $daysAdd = 15;
-                    $date = $ledger['created_at'];
+                    $date = $ledger['invoice_date'];
                     $date = $date->addDays($daysAdd)->format("d-M-Y");
 
                     $msgTemp = "Dear " . $ledger->customer->name . "
