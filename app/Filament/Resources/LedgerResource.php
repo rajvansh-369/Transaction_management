@@ -144,6 +144,10 @@ class LedgerResource extends Resource
 
                             // ->required()
                             ->readonly(),
+                        TextInput::make('interest_amount')
+
+                            // ->required()
+                            ->readonly(),
                         TextInput::make('total_credit')
 
                             ->afterStateUpdated(function (Set $set, $state, Get $get) {
@@ -226,7 +230,11 @@ class LedgerResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total_amount')
-                    ->numeric()
+                    ->formatStateUsing(function ($record) {
+
+                      return number_format($record['total_amount'] + $record['interest_amount'], 2 , '.' , ',');
+                    })
+
                     ->sortable(),
                 Tables\Columns\TextColumn::make('invoice_date')
                     ->dateTime()

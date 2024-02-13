@@ -11487,9 +11487,9 @@
 
                             <div class="col-xs-5 text-right payment-details">
                                 <p class="lead marginbottom payment-info">Payment details</p>
-                                <p>Date: {{\Carbon\Carbon::parse($ledger->invoice_date)->format('D, M d, Y') }}</p>
+                                <p class="lead marginbottom payment-info">Date: {{\Carbon\Carbon::parse($ledger->invoice_date)->format('D, M d, Y') }}</p>
                                 {{-- <p>VAT: DK888-777 </p> --}}
-                                <p>Total Amount: {{ number_format($ledger->total_amount, 2 , '.' , ',') }}</p>
+                                <p class="lead marginbottom payment-info">Total Amount: {{ number_format($ledger->total_amount + $ledger->interest_amount, 2 , '.' , ',') }}</p>
                                 {{-- <p>Account Name: Flatter</p> --}}
                             </div>
 
@@ -11571,7 +11571,11 @@
                                 {{-- <p>Total NUG : {{number_format($totalNug  , 2 , '.' , ',') }} </p> --}}
                                 <p>Bardana ({{$ledger->bardana}}) : {{number_format($ledger->bardana * $totalNug  , 2 , '.' , ',') }} </p>
                                 <p>Labour ({{$ledger->labour}}): {{number_format($ledger->labour * $totalNug   , 2 , '.' , ',')}} </p>
-                                <p>Total : Rs. {{number_format($ledger->total_amount   , 2 , '.' , ',') }} </p>
+                                @if ($ledger->interest_amount != "0.00")
+
+                                <p>Late Fees: : {{number_format($ledger->interest_amount   , 2 , '.' , ',')}} </p>
+                                @endif
+                                <p>Total : Rs. {{number_format($ledger->total_amount  + $ledger->interest_amount  , 2 , '.' , ',') }} </p>
                             </div>
                         </div>
 
