@@ -20,8 +20,22 @@ class EditLedger extends EditRecord
             ->label("Print")
             ->url(function($record){
               $url =  Request::url();
+            //   $url = "https://jmdkhatabook.com/admin/ledgers/64/edit";
                 $urlArray = explode("/", $url);
-                return  route('pdf', $urlArray[5]) ;
+
+                // dd($url, $urlArray, ($urlArray[5]) > 0);
+                if($urlArray[3] == "admin" ){
+
+                    if($urlArray[4] == "ledgers"){
+
+                        if(($urlArray[5]) > 0){
+
+                            // dd($url, $urlArray);
+                            return  route('pdf', $urlArray[5]) ;
+                        }
+                    }
+                }
+
             }),
             Actions\CreateAction::make()
             ->color("success")
