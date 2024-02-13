@@ -229,6 +229,9 @@ class LedgerResource extends Resource
                 Tables\Columns\TextColumn::make('total_credit')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('interest_amount')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('total_amount')
                     ->formatStateUsing(function ($record) {
 
