@@ -116,6 +116,7 @@ class LedgerResource extends Resource
                             ->live(),
                         TextInput::make('bardana')
                             ->label('Bardana Charge(/Nug)')
+                            ->numeric()
                             ->required()
 
                             ->afterStateUpdated(function (Set $set, ?Ledger $record, $state, Get $get) {
