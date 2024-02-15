@@ -11468,7 +11468,7 @@
 
                             <div class="col-sm-6 top-right">
                                 <h3 class="marginright" style="margin-top: 22px;">INVOICE-{{ $ledger->bill_no }}</h3>
-                                <span class="marginright">{{\Carbon\Carbon::parse($ledger->created_at)->format('D, M d, Y h:i A') }}</span>
+                                <span class="marginright">{{\Carbon\Carbon::parse($ledger->invoice_date)->format('D, M d, Y h:i A') }}</span>
                             </div>
 
                         </div>
