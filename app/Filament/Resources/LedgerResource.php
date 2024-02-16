@@ -206,7 +206,7 @@ class LedgerResource extends Resource
                             // dd();
                             return   route('pdf', $record->id);
                         })
-                        ->color("success")
+                        ->color("info")
                 ]),
 
 

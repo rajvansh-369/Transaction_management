@@ -31,6 +31,11 @@ class PDFController extends Controller
 
         $pdf = PDF::loadView('reciept', $data);
 
-        return $pdf->download('invoice.pdf');
+
+        $pdfName = 'invoice_'.$ledger->customer->name.'_'.$ledger->bill_no;
+        // Replace spaces with underscores
+        $text_with_underscores = str_replace(' ', '_', $pdfName);
+        // dd($text_with_underscores );
+        return $pdf->download($text_with_underscores.'.pdf');
     }
 }
