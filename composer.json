@@ -15,7 +15,7 @@
         "codeat3/blade-pepicons": "^1.4",
         "filament/filament": "3.1",
         "flowframe/laravel-trend": "^0.1.5",
-        "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.8",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
