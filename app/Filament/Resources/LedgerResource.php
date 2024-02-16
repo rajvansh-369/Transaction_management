@@ -31,6 +31,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
+use Filament\Forms\Components\Tabs;
 
 
 class LedgerResource extends Resource
@@ -194,7 +195,21 @@ class LedgerResource extends Resource
 
                         $currentDate = Carbon::now();
                         return $currentDate;
-                    })
+                    }),
+
+
+
+                Forms\Components\Actions::make([
+                    Forms\Components\Actions\Action::make('Print Invoice')
+                        ->url(function ($record) {
+
+                            // dd();
+                            return   route('pdf', $record->id);
+                        })
+                        ->color("success")
+                ]),
+
+
 
 
             ]);
@@ -236,7 +251,7 @@ class LedgerResource extends Resource
                 Tables\Columns\TextColumn::make('total_amount')
                     ->formatStateUsing(function ($record) {
 
-                      return number_format($record['total_amount'] + $record['interest_amount'], 2 , '.' , ',');
+                        return number_format($record['total_amount'] + $record['interest_amount'], 2, '.', ',');
                     })
 
                     ->sortable(),
