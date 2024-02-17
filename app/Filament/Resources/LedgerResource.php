@@ -207,7 +207,7 @@ class LedgerResource extends Resource
                             return   route('pdf', $record->id);
                         })
                         ->color("info")
-                ]),
+                ])->visibleOn('edit'),
 
 
 
