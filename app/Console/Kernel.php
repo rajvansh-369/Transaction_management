@@ -21,7 +21,7 @@ class Kernel extends ConsoleKernel
             $response = Http::get(route('ledger.tax'));
             // return route('ledger.tax')
             // Log the response (optional)
-            \Illuminate\Support\Facades\Log::info($response->status() . ' ' . $response->body());
+            // \Illuminate\Support\Facades\Log::info($response->status() . ' ' . $response->body());
         })->everyMinute();
     }
 
