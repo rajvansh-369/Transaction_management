@@ -11468,7 +11468,7 @@
 
                             <div class="col-sm-6 top-right">
                                 <h3 class="marginright" style="margin-top: 22px;">INVOICE-{{ $ledger->bill_no }}</h3>
-                                <span class="marginright">{{\Carbon\Carbon::parse($ledger->invoice_date)->format('D, M d, Y h:i A') }}</span>
+                                <span class="marginright">{{\Carbon\Carbon::parse($ledger->invoice_date)->format('D, M d, Y') }}</span>
                             </div>
 
                         </div>
@@ -11489,7 +11489,9 @@
                                 <p class="lead marginbottom payment-info">Payment details</p>
                                 <p class="lead marginbottom payment-info">Date: {{\Carbon\Carbon::parse($ledger->invoice_date)->format('D, M d, Y') }}</p>
                                 {{-- <p>VAT: DK888-777 </p> --}}
-                                <p class="lead marginbottom payment-info">Total Amount: {{ number_format($ledger->total_amount + $ledger->interest_amount, 2 , '.' , ',') }}</p>
+
+                                <p class="lead marginbottom payment-info">Total Amount: {{ number_format($ledger->total_due
+                                    + $ledger->interest_amount, 2 , '.' , ',') }}</p>
                                 {{-- <p>Account Name: Flatter</p> --}}
                             </div>
 
@@ -11575,7 +11577,9 @@
 
                                 <p>Late Fees: : {{number_format($ledger->interest_amount   , 2 , '.' , ',')}} </p>
                                 @endif
-                                <p>Total : Rs. {{number_format($ledger->total_amount  + $ledger->interest_amount  , 2 , '.' , ',') }} </p>
+                                <p>Paid : Rs. {{number_format($ledger->total_credit  , 2 , '.' , ',') }} </p>
+
+                                <p>Total : Rs. {{number_format($ledger->total_due  + $ledger->interest_amount  , 2 , '.' , ',') }} </p>
                             </div>
                         </div>
 
