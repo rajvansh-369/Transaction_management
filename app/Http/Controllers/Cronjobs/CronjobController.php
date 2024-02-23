@@ -43,7 +43,7 @@ This is a reminder about your upcoming payment due on " . $createdAt->format("d-
                     // Print request parameters
 
                     // dd($ledger , $msgTemp);
-                    // $response =  Http::get('http://sms0005.smsspeed.net/http-tokenkeyapi.php?senderid=TEXTTO&route=1&templateid=1607100000000296746&authentic-key=383473616e646565706c64683130301705659905&number=' . $ledger->customer->phone . '&message= ' . $msgTemp . '');
+                    $response =  Http::get('http://sms0005.smsspeed.net/http-tokenkeyapi.php?senderid=TEXTTO&route=1&templateid=1607100000000296746&authentic-key=383473616e646565706c64683130301705659905&number=' . $ledger->customer->phone . '&message= ' . $msgTemp . '');
                     // $response = "";
                     $responseArray = [
 
@@ -70,7 +70,7 @@ This is a reminder about your upcoming payment due on " . $createdAt->format("d-
                     $msgTemp = "Dear " . $ledger->customer->name . "
 This is a reminder about your upcoming payment overdue from " . $createdAt->format("d-M-Y") . " %26 Amount : " . number_format($totalDue + $interestAmount, 2, '.', ',') . " to till date. Please complete your overdue payment with 18% late fees charges.
                     Text2";
-                    // $response = Http::get('http://sms0005.smsspeed.net/http-tokenkeyapi.php?senderid=TEXTTO&route=1&templateid=1607100000000296747&authentic-key=383473616e646565706c64683130301705659905&number=' . $ledger->customer->phone . '&message=' . $msgTemp . '');
+                    $response = Http::get('http://sms0005.smsspeed.net/http-tokenkeyapi.php?senderid=TEXTTO&route=1&templateid=1607100000000296747&authentic-key=383473616e646565706c64683130301705659905&number=' . $ledger->customer->phone . '&message=' . $msgTemp . '');
 
                     // $response = "";
                     $ledger->save();
@@ -107,7 +107,7 @@ This is a reminder about your upcoming payment overdue from " . $createdAt->form
 This is a reminder about your upcoming payment overdue from " . $createdAt->format("d-M-Y") . " %26 Amount : " . number_format($totalDue + $interestAmount, 2, '.', ',') . "
 to till date. Please complete your overdue payment with 18% late fees charges.
 Text2";
-                    // $response =  Http::get('http://sms0005.smsspeed.net/http-tokenkeyapi.php?senderid=TEXTTO&route=1&templateid=1607100000000296747&authentic-key=383473616e646565706c64683130301705659905&number=' . $ledger->customer->phone . '&message=' . $msgTemp . '');
+                    $response =  Http::get('http://sms0005.smsspeed.net/http-tokenkeyapi.php?senderid=TEXTTO&route=1&templateid=1607100000000296747&authentic-key=383473616e646565706c64683130301705659905&number=' . $ledger->customer->phone . '&message=' . $msgTemp . '');
                     // $response = "";
                     $ledger->save();
 
