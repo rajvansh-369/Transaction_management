@@ -60,7 +60,7 @@ This is a reminder about your upcoming payment due on " . $createdAt->format("d-
                     \Illuminate\Support\Facades\Log::info($createdAt);
                     \Illuminate\Support\Facades\Log::info($responseArray);
 
-                }  if ($differenceInDays >= 15 &&  $ledger->sms_sent_type ===  0) {
+                }  if ($differenceInDays >= 16 &&  $ledger->sms_sent_type ===  0) {
 
 
 
@@ -89,7 +89,7 @@ This is a reminder about your upcoming payment overdue from " . $createdAt->form
                     \Illuminate\Support\Facades\Log::info($createdAt);
                     \Illuminate\Support\Facades\Log::info($responseArray);
 
-                }  if ($differenceInDays > 15 && $differenceInDays % 3 == 0 &&  $ledger->sms_sent_type ===  1 ||   $ledger->sms_sent_type === 2) {
+                }  if ($differenceInDays > 17 && $differenceInDays % 3 == 0 && ( $ledger->sms_sent_type ===  1 ||   $ledger->sms_sent_type === 2)) {
 
 
                     \Illuminate\Support\Facades\Log::info($differenceInDays);
