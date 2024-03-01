@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Cronjobs;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use App\Models\Ledger;
 use Carbon\Carbon;
@@ -10,6 +11,21 @@ use Illuminate\Support\Facades\Http;
 
 class CronjobController extends Controller
 {
+
+    public function adjustInvoice(){
+
+
+        $customers = Customer::all();
+
+        return view("adjustInvoice", compact("customers"));
+    }
+
+    public function adjustInvoicePost(){
+
+
+
+    }
+
     public function addTaxOnLedger()
     {
         $allLedgers = Ledger::get();
@@ -43,7 +59,7 @@ This is a reminder about your upcoming payment due on " . $createdAt->format("d-
                     // Print request parameters
 
                     // dd($ledger , $msgTemp);
-                    $response =  Http::get('http://sms0005.smsspeed.net/http-tokenkeyapi.php?senderid=TEXTTO&route=1&templateid=1607100000000296746&authentic-key=383473616e646565706c64683130301705659905&number=' . $ledger->customer->phone . '&message= ' . $msgTemp . '');
+                    // $response =  Http::get('http://sms0005.smsspeed.net/http-tokenkeyapi.php?senderid=TEXTTO&route=1&templateid=1607100000000296746&authentic-key=383473616e646565706c64683130301705659905&number=' . $ledger->customer->phone . '&message= ' . $msgTemp . '');
                     // $response = "";
                     $responseArray = [
 
@@ -59,8 +75,8 @@ This is a reminder about your upcoming payment due on " . $createdAt->format("d-
                     \Illuminate\Support\Facades\Log::info($ledger->customer->name);
                     \Illuminate\Support\Facades\Log::info($createdAt);
                     \Illuminate\Support\Facades\Log::info($responseArray);
-
-                }  if ($differenceInDays >= 16 &&  $ledger->sms_sent_type ===  0) {
+                }
+                if ($differenceInDays >= 16 &&  $ledger->sms_sent_type ===  0) {
 
 
 
@@ -70,7 +86,7 @@ This is a reminder about your upcoming payment due on " . $createdAt->format("d-
                     $msgTemp = "Dear " . $ledger->customer->name . "
 This is a reminder about your upcoming payment overdue from " . $createdAt->format("d-M-Y") . " %26 Amount : " . number_format($totalDue + $interestAmount, 2, '.', ',') . " to till date. Please complete your overdue payment with 18% late fees charges.
                     Text2";
-                    $response = Http::get('http://sms0005.smsspeed.net/http-tokenkeyapi.php?senderid=TEXTTO&route=1&templateid=1607100000000296747&authentic-key=383473616e646565706c64683130301705659905&number=' . $ledger->customer->phone . '&message=' . $msgTemp . '');
+                    // $response = Http::get('http://sms0005.smsspeed.net/http-tokenkeyapi.php?senderid=TEXTTO&route=1&templateid=1607100000000296747&authentic-key=383473616e646565706c64683130301705659905&number=' . $ledger->customer->phone . '&message=' . $msgTemp . '');
 
                     // $response = "";
                     $ledger->save();
@@ -88,8 +104,8 @@ This is a reminder about your upcoming payment overdue from " . $createdAt->form
                     \Illuminate\Support\Facades\Log::info($ledger->customer->name);
                     \Illuminate\Support\Facades\Log::info($createdAt);
                     \Illuminate\Support\Facades\Log::info($responseArray);
-
-                }  if ($differenceInDays > 17 && $differenceInDays % 3 == 0 && ( $ledger->sms_sent_type ===  1 ||   $ledger->sms_sent_type === 2)) {
+                }
+                if ($differenceInDays > 17 && $differenceInDays % 3 == 0 && ($ledger->sms_sent_type ===  1 ||   $ledger->sms_sent_type === 2)) {
 
 
                     \Illuminate\Support\Facades\Log::info($differenceInDays);
@@ -107,7 +123,7 @@ This is a reminder about your upcoming payment overdue from " . $createdAt->form
 This is a reminder about your upcoming payment overdue from " . $createdAt->format("d-M-Y") . " %26 Amount : " . number_format($totalDue + $interestAmount, 2, '.', ',') . "
 to till date. Please complete your overdue payment with 18% late fees charges.
 Text2";
-                    $response =  Http::get('http://sms0005.smsspeed.net/http-tokenkeyapi.php?senderid=TEXTTO&route=1&templateid=1607100000000296747&authentic-key=383473616e646565706c64683130301705659905&number=' . $ledger->customer->phone . '&message=' . $msgTemp . '');
+                    // $response =  Http::get('http://sms0005.smsspeed.net/http-tokenkeyapi.php?senderid=TEXTTO&route=1&templateid=1607100000000296747&authentic-key=383473616e646565706c64683130301705659905&number=' . $ledger->customer->phone . '&message=' . $msgTemp . '');
                     // $response = "";
                     $ledger->save();
 
@@ -128,8 +144,6 @@ Text2";
             } else {
                 continue;
             }
-
-
         }
     }
 }

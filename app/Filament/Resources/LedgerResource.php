@@ -32,7 +32,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 use Filament\Forms\Components\Tabs;
-
+use Illuminate\View\View;
 
 class LedgerResource extends Resource
 {
@@ -104,12 +104,12 @@ class LedgerResource extends Resource
 
                                 // dd($totalPrice , $totalNug);
                                 if ($get('bardana') != '' || $get('total_due') != '') {
-                                    $set('total_amount', (float)$totalPrice + $state * $totalNug + (float)$get('bardana') * $totalNug);
+                                    $set('total_amount', (float)$totalPrice + $state * $totalNug + ((float)$get('bardana') * $totalNug));
 
                                     //   dd($get('total_amount') , $get('total_credit'));
-                                    $set('total_due', (float)$get('total_amount') - (float)$get('total_credit'));
+                                    $set('total_due', (float)$get('total_amount')  + (float)$get('interest_amount') - (float)$get('total_credit'));
                                 } else {
-                                    $set('total_amount', (float)$totalPrice + $state * $totalNug);
+                                    $set('total_amount', (float)$totalPrice  + $state * $totalNug);
                                 }
                             })
                             // ->required()
@@ -132,12 +132,12 @@ class LedgerResource extends Resource
                                 // dd($get('total_credit'));
                                 if ($get('labour') != '' || $get('total_due') != '') {
 
-                                    $set('total_amount', (float)$totalPrice + $state * $totalNug + (float)$get('labour') * $totalNug);
+                                    $set('total_amount', (float)$totalPrice + $state * $totalNug + ((float)$get('labour') * $totalNug));
 
 
-                                    $set('total_due', (float)$get('total_amount') - (float)$get('total_credit'));
+                                    $set('total_due', (float)$get('total_amount')  + (float)$get('interest_amount') - (float)$get('total_credit'));
                                 } else {
-                                    $set('total_amount', (float)$totalPrice + $state * $totalNug);
+                                    $set('total_amount', (float)$totalPrice   + $state * $totalNug);
                                 }
                             })->live()
                         // ->required()
@@ -148,7 +148,6 @@ class LedgerResource extends Resource
                             ->readonly(),
                         TextInput::make('interest_amount')
 
-                            // ->required()
                             ->readonly(),
                         TextInput::make('total_credit')
 
