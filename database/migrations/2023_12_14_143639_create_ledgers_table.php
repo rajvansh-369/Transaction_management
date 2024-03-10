@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('labour')->nullable();
             $table->integer('bardana')->nullable();
             $table->boolean('is_paid')->default(false);
+            $table->float('interest_amount')->nullable();
             $table->integer('sms_sent_type')->nullable()->comment("0= days less than 12 1 = days equal to 15 2 = days more than 18");
             $table->timestamp('invoice_date')->useCurrent();
             $table->timestamps();

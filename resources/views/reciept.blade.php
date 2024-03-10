@@ -11531,7 +11531,7 @@
 
                                             <td>{{ $product->name }}</td>
                                             <td class="text-right">{{ number_format($product->pivot->product_qty/$product->nug , 2 , '.' , ',') }} </td>
-                                            <td class="text-right">{{$product->pivot->product_qty}}</td>
+                                            <td class="text-right">{{$product->pivot->product_qty}} KG</td>
                                             {{-- <td class="text-right">{{($product->pivot->product_qty) + $product->peti	}}</td> --}}
                                             <td class="text-right">{{ number_format($product->pivot->product_price  , 2 , '.' , ',') }}</td>
                                             <td class="text-right">

@@ -24,3 +24,5 @@ Route::get('/', function () {
 
 Route::get('generate-pdf/{id}', [PDFController::class, 'generatePDF'])->name('pdf');
 Route::get('add-tax', [CronjobController::class, 'addTaxOnLedger'])->name('ledger.tax');
+Route::get('adjust-invoice', [CronjobController::class, 'adjustInvoice'])->name('adjustInvoice');
+Route::post('adjust-invoice', [CronjobController::class, 'adjustInvoicePost'])->name('adjustInvoicePost');

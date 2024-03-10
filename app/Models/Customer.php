@@ -20,4 +20,10 @@ class Customer extends Model
     {
         return $this->belongsToMany(Ledger::class);
     }
+
+
+    public function ledgers()
+    {
+        return $this->hasMany(Ledger::class);
+    }
 }
