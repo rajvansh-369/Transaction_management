@@ -14,6 +14,11 @@ class ListTransactions extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+            ->openUrlInNewTab()
+            ->color("success")
+            ->label("Adjust Leder")
+            ->url(fn (): string => route('adjustInvoice'), shouldOpenInNewTab: true),
         ];
     }
 }
