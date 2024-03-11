@@ -25,7 +25,7 @@ class CustomerResource extends Resource
 
         $indianStates = [
             'AR' => 'Arunachal Pradesh',
-            'AR' => 'Arunachal Pradesh',
+            'AP' => 'Andhra Pradesh',
             'AS' => 'Assam',
             'BR' => 'Bihar',
             'CT' => 'Chhattisgarh',
