@@ -33,6 +33,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 use Filament\Forms\Components\Tabs;
 use Illuminate\View\View;
+use Filament\Tables\Filters\SelectFilter;
 
 class LedgerResource extends Resource
 {
@@ -155,7 +156,7 @@ class LedgerResource extends Resource
 
 
                                 // dd($get('total_amount') ,$state);
-                                $set('total_due', $get('total_amount') - $state);
+                                $set('total_due', round($get('total_amount') +  $get('interest_amount') - $state));
                                 if ($get('total_due') == 0) {
 
 
@@ -220,8 +221,10 @@ class LedgerResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('customer.name')
                     ->searchable()
-                    ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('customer.phone')
+                    ->searchable()
+                    ->label('Phone'),
                 Tables\Columns\TextColumn::make('bill_no')
                     ->searchable(),
                 IconColumn::make('is_paid')
@@ -240,12 +243,24 @@ class LedgerResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('total_due')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->formatStateUsing(function ($record) {
+
+                        return number_format( $record['total_due'], 2, '.', ',');
+                    }),
                 Tables\Columns\TextColumn::make('total_credit')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->formatStateUsing(function ($record) {
+
+                        return number_format( $record['total_credit'], 2, '.', ',');
+                    }),
                 Tables\Columns\TextColumn::make('interest_amount')
                     ->numeric()
+                    ->formatStateUsing(function ($record) {
+
+                        return number_format($record['interest_amount'], 2, '.', ',');
+                    })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total_amount')
                     ->formatStateUsing(function ($record) {
@@ -268,22 +283,40 @@ class LedgerResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])->defaultSort('created_at', 'desc', 'is_paid', 'desc')
             ->filters([
-                Filter::make('created_at')
+                SelectFilter::make('is_paid')
+                ->options([
+                    '0' => 'Un-Paid',
+                    '1' => 'Paid'
+                ]),
+
+                SelectFilter::make('customer_id')
+                ->multiple()
+                ->options(Customer::orderBy('name','ASC')->get()->pluck('name', 'id')),
+                Filter::make('invoice_date')
                     ->form([
-                        DatePicker::make('created_from'),
-                        DatePicker::make('created_until'),
+                        DatePicker::make('due_from'),
+                        DatePicker::make('due_until'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
                             ->when(
-                                $data['created_from'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                                $data['due_from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('invoice_date', '>=', $date),
                             )
                             ->when(
-                                $data['created_until'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                                $data['due_until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('invoice_date', '<=', $date),
                             );
                     })
+                    ->indicateUsing(function (array $data): ?string {
+                        if (!$data['due_from']) {
+                            return null;
+                        }
+
+                        $indcator = 'Due from ' . Carbon::parse($data['due_from'])->toFormattedDateString() . " -- " . Carbon::parse($data['due_until'])->toFormattedDateString();
+                        return $indcator;
+                    }),
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
