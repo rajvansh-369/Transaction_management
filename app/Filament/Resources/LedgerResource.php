@@ -115,7 +115,7 @@ class LedgerResource extends Resource
                             })
                             // ->required()
                             ->numeric()
-                            ->live(),
+                            ->live(onBlur: true),
                         TextInput::make('bardana')
                             ->label('Bardana Charge(/Nug)')
                             ->numeric()
@@ -140,7 +140,7 @@ class LedgerResource extends Resource
                                 } else {
                                     $set('total_amount', (float)$totalPrice   + $state * $totalNug);
                                 }
-                            })->live()
+                            })->live(onBlur: true)
                         // ->required()
                         ,
                         TextInput::make('total_amount')
