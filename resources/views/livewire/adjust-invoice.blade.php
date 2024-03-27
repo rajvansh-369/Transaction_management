@@ -3,10 +3,17 @@
         <div class="col-xl-5 col-lg-6 col-md-7">
             <div class="card b-0">
                 <h3 class="heading">{{ $custName ?? 'Customer Name' }}</h3>
-                <p class="desc">Total Amount: <span class="red-text">₹
-                        {{ number_format($totalSumAmount + $totalSumIntrest, 2, '.', ',') }}</span>
+
                 <p class="desc">Total Due: <span class="red-text">₹
-                        {{ number_format($totalSumDue, 2, '.', ',') }}</span></p>
+                    {{ number_format($totalSumDue, 2, '.', ',') }}</span></p>
+                    <p class="desc">Total Intrest: <span class="red-text">₹
+                        {{ number_format($totalSumIntrest , 2, '.', ',') }}</span></p>
+                <p class="desc">Total Amount: <span class="red-text">₹
+                        {{ number_format($totalSumAmount , 2, '.', ',') }}</span></p>
+
+
+
+
 
                 @if ($totalSumDue == 0 && count($getInvoices ) > 0)
                     <h4 class="desc" style="color: red">Already Paid</h4>
@@ -50,6 +57,7 @@
                                             </div>
                                             <p class="sub-desc">Bill No : #{{ $getInvoice->bill_no }}</p>
                                             <p class="sub-desc"> Total Due : ₹{{ $getInvoice->total_due }}</p>
+                                            <p class="sub-desc"> Total Intrest : ₹{{ $getInvoice->interest_amount }}</p>
                                             <p class="sub-desc"> Total Amount : ₹{{ $getInvoice->total_amount }}</p>
                                             <p class="sub-desc">Invoice Date :
                                                 {{ \Carbon\Carbon::parse($getInvoice->invoice_date)->format('d-M-Y') }}
