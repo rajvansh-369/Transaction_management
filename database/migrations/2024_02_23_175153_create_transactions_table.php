@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade')->uniqid();
-            $table->foreignId('ledger_id')->constrained('ledgers')->onDelete('cascade');
             $table->string('credit');
-            $table->string('debit');
+            $table->string('debit')->nullable();
+            $table->string('transaction_date');
             $table->timestamps();
         });
     }

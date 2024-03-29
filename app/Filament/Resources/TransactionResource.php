@@ -7,7 +7,10 @@ use App\Filament\Resources\TransactionResource\RelationManagers;
 use App\Models\Customer;
 use App\Models\Ledger;
 use App\Models\Transaction;
+use DateTime;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -119,10 +122,8 @@ class TransactionResource extends Resource
                     ->required()
                     ->numeric()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('debit')
-                    ->required()
-                    ->numeric()
-                    ->maxLength(255),
+                DatePicker::make('transaction_date')
+                    ->required(),
             ]);
     }
 
@@ -135,7 +136,7 @@ class TransactionResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('credit')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('debit')
+                Tables\Columns\TextColumn::make('transaction_date')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

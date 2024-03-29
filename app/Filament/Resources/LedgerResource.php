@@ -317,6 +317,31 @@ class LedgerResource extends Resource
                         return $indcator;
                     }),
 
+                Filter::make('over_due')
+                    ->form([
+                        DatePicker::make('due_from'),
+                        DatePicker::make('due_until'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['due_from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('invoice_date', '>=', $date),
+                            )
+                            ->when(
+                                $data['due_until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('invoice_date', '<=', $date),
+                            );
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        if (!$data['due_from']) {
+                            return null;
+                        }
+
+                        $indcator = 'Due from ' . Carbon::parse($data['due_from'])->toFormattedDateString() . " -- " . Carbon::parse($data['due_until'])->toFormattedDateString();
+                        return $indcator;
+                    }),
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

@@ -30,7 +30,7 @@ class CustomerProductRelationManager extends RelationManager
 
                 Select::make('name')
                 ->options(Product::all()->pluck('name', 'id'))->searchable(),
-                TextInput::make('product_qty')->label("Total Weight In KG"),
+                TextInput::make('product_qty')->label("Total Weight In KG")->numeric(),
                    TextInput::make('product_price')
                    ->numeric()
                    ->label('Rate/Kg'),
@@ -101,7 +101,8 @@ class CustomerProductRelationManager extends RelationManager
                 )
                 ->form(fn (AttachAction $action): array => [
                     $action->getRecordSelect(),
-                   TextInput::make('product_qty')->label("Total Weight In KG"),
+                   TextInput::make('product_qty')
+                   ->numeric()->label("Total Weight In KG"),
                    TextInput::make('product_price')
                    ->numeric()
                    ->label('Rate/Kg'),
