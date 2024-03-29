@@ -246,14 +246,14 @@ class LedgerResource extends Resource
                     ->sortable()
                     ->formatStateUsing(function ($record) {
 
-                        return number_format( $record['total_due'], 2, '.', ',');
+                        return number_format($record['total_due'], 2, '.', ',');
                     }),
                 Tables\Columns\TextColumn::make('total_credit')
                     ->numeric()
                     ->sortable()
                     ->formatStateUsing(function ($record) {
 
-                        return number_format( $record['total_credit'], 2, '.', ',');
+                        return number_format($record['total_credit'], 2, '.', ',');
                     }),
                 Tables\Columns\TextColumn::make('interest_amount')
                     ->numeric()
@@ -284,14 +284,14 @@ class LedgerResource extends Resource
             ])->defaultSort('created_at', 'desc', 'is_paid', 'desc')
             ->filters([
                 SelectFilter::make('is_paid')
-                ->options([
-                    '0' => 'Un-Paid',
-                    '1' => 'Paid'
-                ]),
+                    ->options([
+                        '0' => 'Un-Paid',
+                        '1' => 'Paid'
+                    ]),
 
                 SelectFilter::make('customer_id')
-                ->multiple()
-                ->options(Customer::orderBy('name','ASC')->get()->pluck('name', 'id')),
+                    ->multiple()
+                    ->options(Customer::orderBy('name', 'ASC')->get()->pluck('name', 'id')),
                 Filter::make('invoice_date')
                     ->form([
                         DatePicker::make('due_from'),
@@ -316,30 +316,33 @@ class LedgerResource extends Resource
                         $indcator = 'Due from ' . Carbon::parse($data['due_from'])->toFormattedDateString() . " -- " . Carbon::parse($data['due_until'])->toFormattedDateString();
                         return $indcator;
                     }),
-
-                Filter::make('over_due')
+                    Filter::make('over_due')
                     ->form([
-                        DatePicker::make('due_from'),
-                        DatePicker::make('due_until'),
+                        Select::make('is_paid')
+                            ->options([
+                                '0' => 'Un-Paid',
+                                '1' => 'Paid'
+                            ])
                     ])
                     ->query(function (Builder $query, array $data): Builder {
+                        // Get the current date
+                        $currentDate = Carbon::now();
+
+                        // Subtract 15 days from the current date
+                        $dateInvoice = $currentDate->subDays(15)->toDateString();
+
                         return $query
-                            ->when(
-                                $data['due_from'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('invoice_date', '>=', $date),
-                            )
-                            ->when(
-                                $data['due_until'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('invoice_date', '<=', $date),
-                            );
+                            ->when($data['is_paid'] === '0', function ($query) {
+                                $query->where('is_paid', 0); // Filter by 'Un-Paid'
+                            })
+                            ->whereDate('invoice_date', '<=', $dateInvoice);
                     })
                     ->indicateUsing(function (array $data): ?string {
-                        if (!$data['due_from']) {
+                        if ($data['is_paid'] === '0') {
+                            return 'Un-Paid invoices older than 15 days';
+                        } else {
                             return null;
                         }
-
-                        $indcator = 'Due from ' . Carbon::parse($data['due_from'])->toFormattedDateString() . " -- " . Carbon::parse($data['due_until'])->toFormattedDateString();
-                        return $indcator;
                     }),
 
             ])
