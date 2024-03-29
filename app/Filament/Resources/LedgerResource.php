@@ -283,12 +283,33 @@ class LedgerResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])->defaultSort('created_at', 'desc', 'is_paid', 'desc')
             ->filters([
-                SelectFilter::make('is_paid')
-                    ->options([
-                        '0' => 'Un-Paid',
-                        '1' => 'Paid'
-                    ]),
+                Filter::make('over_due')
+                ->form([
+                    Select::make('over_due')
+                        ->options([
+                            '0' => 'Over-Due'
+                        ])
+                ])
+                ->query(function (Builder $query, array $data): Builder {
+                    // Get the current date
+                    $currentDate = Carbon::now();
 
+                    // Subtract 15 days from the current date
+                    $dateInvoice = $currentDate->subDays(15)->toDateString();
+
+                    return $query
+                        ->when($data['over_due'] === '0', function ($query) {
+                            $query->where('is_paid', 0); // Filter by 'Un-Paid'
+                        })
+                        ->whereDate('invoice_date', '<=', $dateInvoice);
+                })
+                ->indicateUsing(function (array $data): ?string {
+                    if ($data['over_due'] === '0') {
+                        return 'Over-Due invoices older than 15 days';
+                    } else {
+                        return null;
+                    }
+                }),
                 SelectFilter::make('customer_id')
                     ->multiple()
                     ->options(Customer::orderBy('name', 'ASC')->get()->pluck('name', 'id')),
@@ -316,34 +337,7 @@ class LedgerResource extends Resource
                         $indcator = 'Due from ' . Carbon::parse($data['due_from'])->toFormattedDateString() . " -- " . Carbon::parse($data['due_until'])->toFormattedDateString();
                         return $indcator;
                     }),
-                    Filter::make('over_due')
-                    ->form([
-                        Select::make('is_paid')
-                            ->options([
-                                '0' => 'Un-Paid',
-                                '1' => 'Paid'
-                            ])
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        // Get the current date
-                        $currentDate = Carbon::now();
 
-                        // Subtract 15 days from the current date
-                        $dateInvoice = $currentDate->subDays(15)->toDateString();
-
-                        return $query
-                            ->when($data['is_paid'] === '0', function ($query) {
-                                $query->where('is_paid', 0); // Filter by 'Un-Paid'
-                            })
-                            ->whereDate('invoice_date', '<=', $dateInvoice);
-                    })
-                    ->indicateUsing(function (array $data): ?string {
-                        if ($data['is_paid'] === '0') {
-                            return 'Un-Paid invoices older than 15 days';
-                        } else {
-                            return null;
-                        }
-                    }),
 
             ])
             ->actions([
