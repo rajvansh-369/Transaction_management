@@ -287,32 +287,37 @@ class LedgerResource extends Resource
 
             ->filters([
                 Filter::make('over_due')
-                ->form([
-                    Select::make('over_due')
-                        ->options([
-                            '0' => 'Over-Due'
-                        ])
-                ])
-                ->query(function (Builder $query, array $data): Builder {
-                    // Get the current date
-                    $currentDate = Carbon::now();
+                    ->form([
+                        Select::make('over_due')
+                            ->options([
+                                '0' => 'Over-Due'
+                            ])
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
 
-                    // Subtract 15 days from the current date
-                    $dateInvoice = $currentDate->subDays(15)->toDateString();
 
-                    return $query
-                        ->when($data['over_due'] === '0', function ($query) {
-                            $query->where('is_paid', 0); // Filter by 'Un-Paid'
-                        })
-                        ->whereDate('invoice_date', '<=', $dateInvoice);
-                })
-                ->indicateUsing(function (array $data): ?string {
-                    if ($data['over_due'] === '0') {
-                        return 'Over-Due invoices older than 15 days';
-                    } else {
-                        return null;
-                    }
-                }),
+                        return $query
+                            ->when($data['over_due'] === '0', function ($query) {
+                                $query->where('is_paid', 0); // Filter by 'Un-Paid'
+                            })
+
+                            ->when($data['over_due'] === '0', function ($query) {
+                                // Get the current date
+                                $currentDate = Carbon::now();
+
+                                // Subtract 15 days from the current date
+                                $dateInvoice = $currentDate->subDays(15)->toDateString();
+                                $query->where('invoice_date', '<=', $dateInvoice); // Filter by 'Un-Paid'
+                            });
+                        // ->when('invoice_date', '<=', $dateInvoice);
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        if ($data['over_due'] === '0') {
+                            return 'Over-Due invoices older than 15 days';
+                        } else {
+                            return null;
+                        }
+                    }),
                 SelectFilter::make('customer_id')
                     ->multiple()
                     ->options(Customer::orderBy('name', 'ASC')->get()->pluck('name', 'id')),
