@@ -281,7 +281,10 @@ class LedgerResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])->defaultSort('created_at', 'desc', 'is_paid', 'desc')
+            ])->defaultSort('created_at', 'desc')
+
+
+
             ->filters([
                 Filter::make('over_due')
                 ->form([
