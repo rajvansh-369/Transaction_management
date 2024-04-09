@@ -16,7 +16,7 @@ class ListLedgers extends ListRecords
             Actions\CreateAction::make(),
             Actions\CreateAction::make()
             ->color("success")
-            ->label("Create New")
+            ->label("Export Data")
             ->url(function(){
 
                 // env('APP_URL').'admin/ledgers/create'.
