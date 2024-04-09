@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\Cronjobs\CronjobController;
+use App\Models\Ledger;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,3 +28,7 @@ Route::get('generate-pdf/{id}', [PDFController::class, 'generatePDF'])->name('pd
 Route::get('add-tax', [CronjobController::class, 'addTaxOnLedger'])->name('ledger.tax');
 Route::get('adjust-invoice', [CronjobController::class, 'adjustInvoice'])->name('adjustInvoice');
 Route::post('adjust-invoice', [CronjobController::class, 'adjustInvoicePost'])->name('adjustInvoicePost');
+Route::get('export-invoice/{id}', [PDFController::class, 'exportData'])->name('exportInvoice');
+
+
+

@@ -140,7 +140,8 @@ class LedgerResource extends Resource
                                 } else {
                                     $set('total_amount', (float)$totalPrice   + $state * $totalNug);
                                 }
-                            })->live(onBlur: true)
+                            })
+                            ->live(onBlur: true)
                         // ->required()
                         ,
                         TextInput::make('total_amount')
@@ -330,11 +331,11 @@ class LedgerResource extends Resource
                         return $query
                             ->when(
                                 $data['due_from'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('invoice_date', '>=', $date),
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
                             )
                             ->when(
                                 $data['due_until'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('invoice_date', '<=', $date),
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
                     })
                     ->indicateUsing(function (array $data): ?string {
