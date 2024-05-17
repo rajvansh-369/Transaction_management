@@ -16,12 +16,15 @@
         "filament/filament": "3.1",
         "flowframe/laravel-trend": "^0.1.5",
         "guzzlehttp/guzzle": "^7.8",
+        "konnco/filament-import": "^1.6",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.3",
         "maatwebsite/excel": "^3.1",
         "nerdroid23/blade-icomoon": "^1.1",
+        "psr/simple-cache": "2.0",
+        "pxlrbt/filament-excel": "^2.3",
         "themesberg/flowbite-blade-icons": "^1.0"
     },
     "require-dev": {
