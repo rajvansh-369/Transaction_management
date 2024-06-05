@@ -124,8 +124,8 @@ This is a reminder about your upcoming payment overdue from " . $createdAt->form
                     \Illuminate\Support\Facades\Log::info($ledger->customer->name);
                     \Illuminate\Support\Facades\Log::info($createdAt);
                     // Ad per client requirment
-                    // $additionalTax = ($totalDue + $ledger->interest_amount) * 0.015;
-                    $additionalTax = ($ledger->interest_amount) * 0.015;
+                    // $additionalTax = ($totalDue + $ledger->interest_amount) * 0.015; updated by client 05/06
+                    $additionalTax = ($totalDue + $ledger->interest_amount) * 0.015;
 
                     $interestAmount = $ledger->interest_amount + $additionalTax;
                     $ledger->interest_amount = $interestAmount;
