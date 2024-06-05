@@ -85,13 +85,13 @@ This is a reminder about your upcoming payment due on " . $createdAt->format("d-
 
                     // if($ledger->interest_amount == 0) {
 
-                    //     $interestAmount = $totalDue * 0.18;
+                    //     $interestAmount = $totalDue * 0.015;
                     // }else{
 
-                    //     $interestAmount = $ledger->interest_amount * 0.18;
+                    //     $interestAmount = $ledger->interest_amount * 0.015;
                     // }
 
-                    $interestAmount = $totalDue * 0.18;
+                    $interestAmount = $totalDue * 0.015;
                     $ledger->interest_amount = $interestAmount;
                     $ledger->sms_sent_type = 1;
                     $msgTemp = "Dear " . $ledger->customer->name . "
@@ -124,8 +124,8 @@ This is a reminder about your upcoming payment overdue from " . $createdAt->form
                     \Illuminate\Support\Facades\Log::info($ledger->customer->name);
                     \Illuminate\Support\Facades\Log::info($createdAt);
                     // Ad per client requirment
-                    // $additionalTax = ($totalDue + $ledger->interest_amount) * 0.18;
-                    $additionalTax = ($ledger->interest_amount) * 0.18;
+                    // $additionalTax = ($totalDue + $ledger->interest_amount) * 0.015;
+                    $additionalTax = ($ledger->interest_amount) * 0.015;
 
                     $interestAmount = $ledger->interest_amount + $additionalTax;
                     $ledger->interest_amount = $interestAmount;
