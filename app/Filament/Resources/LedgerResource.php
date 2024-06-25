@@ -34,6 +34,7 @@ use Illuminate\Support\Str;
 use Filament\Forms\Components\Tabs;
 use Illuminate\View\View;
 use Filament\Tables\Filters\SelectFilter;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class LedgerResource extends Resource
 {
@@ -359,6 +360,7 @@ class LedgerResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                     ExportBulkAction::make()
                 ]),
             ]);
     }
