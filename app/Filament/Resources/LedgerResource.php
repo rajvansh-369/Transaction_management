@@ -57,8 +57,7 @@ class LedgerResource extends Resource
                     ->default(function () {
 
                         $ledger = Ledger::orderBy('created_at', 'desc')->first();
-                        if($ledger->bill_no > 60 && $ledger->bill_no <= 1) {
-
+                        if($ledger->bill_no < 60 && $ledger->bill_no >= 1) {
 
                             return $ledger->bill_no + 1;
 
