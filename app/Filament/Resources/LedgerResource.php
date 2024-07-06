@@ -59,16 +59,16 @@ class LedgerResource extends Resource
                         $ledger = Ledger::orderBy('created_at', 'desc')->first();
 
 
-                        return   $ledger ?  $ledger->bill_no + 1 : 1;
-                        // if($ledger->bill_no < 60 && $ledger->bill_no >= 1) {
+                        // return   $ledger ?  $ledger->bill_no + 1 : 1;
+                        if($ledger->bill_no < 60 && $ledger->bill_no >= 1) {
 
-                        //     return $ledger->bill_no + 1;
+                            return $ledger->bill_no + 1;
 
-                        // }elseif($ledger->bill_no  == 60){
+                        }elseif($ledger->bill_no  == 60){
 
-                        //     return   1;
+                            return   1;
 
-                        // }
+                        }
                     })
                     ->required()
                     ->readonly(),
